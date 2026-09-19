@@ -1,0 +1,1608 @@
+{
+  "_说明": "IdleAngels 名字映射表。键 = bundle 内 TextAsset m_Name 的小写规范化（自动从全部 spine_*.ab 扫描拼音生成）；角色名多为神话/星座拼音，查不到的角色请补充 characters；皮肤中文名请补充 skins。不确定的已按约定留空（直接用英文 id）。",
+  "characters": {
+    "aboluo_nvpu": {
+      "cn": "阿波罗"
+    },
+    "aboluo_ur": {
+      "cn": "阿波罗"
+    },
+    "aboluohunsha": {
+      "cn": "阿波罗"
+    },
+    "aboluomr": {
+      "cn": "阿波罗"
+    },
+    "aetmsir": {
+      "cn": "阿尔忒弥斯"
+    },
+    "afuluodide": {
+      "cn": "阿芙洛狄忒"
+    },
+    "afuluodidessr": {
+      "cn": "阿芙洛狄忒"
+    },
+    "afuluodideur": {
+      "cn": "阿芙洛狄忒"
+    },
+    "anubisiir": {
+      "cn": "阿努比斯"
+    },
+    "aruisi": {
+      "cn": "阿瑞斯"
+    },
+    "aruisihunsha": {
+      "cn": "阿瑞斯"
+    },
+    "aruisiir": {
+      "cn": "阿瑞斯"
+    },
+    "aruisimr": {
+      "cn": "阿瑞斯"
+    },
+    "aruisiur": {
+      "cn": "阿瑞斯"
+    },
+    "athenassr": {
+      "cn": "雅典娜"
+    },
+    "axiuluo": {
+      "cn": "阿修罗"
+    },
+    "axiuluohunsha": {
+      "cn": "阿修罗"
+    },
+    "axiuluomr": {
+      "cn": "阿修罗"
+    },
+    "banrenmaniangwuxiu": {
+      "cn": "半人马娘"
+    },
+    "beihaijuyao": {
+      "cn": "北海巨妖"
+    },
+    "binglong": {
+      "cn": "冰龙"
+    },
+    "binglonghunsha": {
+      "cn": "冰龙"
+    },
+    "binglongir": {
+      "cn": "冰龙"
+    },
+    "binglongmr": {
+      "cn": "冰龙"
+    },
+    "binglongur": {
+      "cn": "冰龙"
+    },
+    "bosaidongir": {
+      "cn": "波塞冬"
+    },
+    "bosaidongqiujin": {
+      "cn": "波塞冬"
+    },
+    "businiao": {
+      "cn": "不死鸟"
+    },
+    "byzir": {
+      "cn": "白羊座"
+    },
+    "change": {
+      "cn": "嫦娥"
+    },
+    "change_nvpu": {
+      "cn": "嫦娥"
+    },
+    "changea": {
+      "cn": "嫦娥"
+    },
+    "changeb": {
+      "cn": "嫦娥"
+    },
+    "changehunsha": {
+      "cn": "嫦娥"
+    },
+    "changemr": {
+      "cn": "嫦娥"
+    },
+    "changerir": {
+      "cn": "嫦娥"
+    },
+    "changeur": {
+      "cn": "嫦娥"
+    },
+    "chunvzuoir": {
+      "cn": "处女座"
+    },
+    "cnz": {
+      "cn": "处女座"
+    },
+    "cupid_a": {
+      "cn": "丘比特"
+    },
+    "cupid_b": {
+      "cn": "丘比特"
+    },
+    "cupid_c": {
+      "cn": "丘比特"
+    },
+    "fengjingling": {
+      "cn": "风精灵"
+    },
+    "fenglongur": {
+      "cn": "风龙"
+    },
+    "freyja_a": {
+      "cn": "芙蕾雅"
+    },
+    "freyja_b": {
+      "cn": "芙蕾雅"
+    },
+    "freyjaur": {
+      "cn": "芙蕾雅"
+    },
+    "fuleiya": {
+      "cn": "芙蕾雅"
+    },
+    "fuleiya_nvpu": {
+      "cn": "芙蕾雅"
+    },
+    "fuleiyahunsha": {
+      "cn": "芙蕾雅"
+    },
+    "fuleiyair": {
+      "cn": "芙蕾雅"
+    },
+    "fuleiyamr": {
+      "cn": "芙蕾雅"
+    },
+    "fuleiyazhounianqing": {
+      "cn": "芙蕾雅"
+    },
+    "fulijiamr": {
+      "cn": "弗丽嘉"
+    },
+    "fuxiir": {
+      "cn": "伏羲"
+    },
+    "fuxiqiujin": {
+      "cn": "伏羲"
+    },
+    "fxcj": {
+      "cn": "伏羲"
+    },
+    "gaiya": {
+      "cn": "盖亚"
+    },
+    "haierdamuhunsha": {
+      "cn": "海姆达尔"
+    },
+    "haimudaermr": {
+      "cn": "海姆达尔"
+    },
+    "haimudaerur": {
+      "cn": "海姆达尔"
+    },
+    "hela": {
+      "cn": "赫拉"
+    },
+    "hela_ur": {
+      "cn": "赫拉"
+    },
+    "helamr": {
+      "cn": "赫拉"
+    },
+    "helas": {
+      "cn": "赫拉"
+    },
+    "helusiir": {
+      "cn": "荷鲁斯"
+    },
+    "helusinvpu": {
+      "cn": "荷鲁斯"
+    },
+    "helusiur": {
+      "cn": "荷鲁斯"
+    },
+    "hfsts": {
+      "cn": "赫菲斯托斯"
+    },
+    "huiyeji_duanwu": {
+      "cn": "辉夜姬"
+    },
+    "huojingling": {
+      "cn": "火精灵"
+    },
+    "huolong": {
+      "cn": "火龙"
+    },
+    "huolonghunsha": {
+      "cn": "火龙"
+    },
+    "huolongir": {
+      "cn": "火龙"
+    },
+    "jiuweihu": {
+      "cn": "九尾狐"
+    },
+    "jnzir": {
+      "cn": "金牛座"
+    },
+    "juxiezuoir": {
+      "cn": "巨蟹座"
+    },
+    "juxiezuomuyu": {
+      "cn": "巨蟹座"
+    },
+    "jxz": {
+      "cn": "巨蟹座"
+    },
+    "kaesi": {
+      "cn": "卡俄斯"
+    },
+    "kaesihunsha": {
+      "cn": "卡俄斯"
+    },
+    "kaesimr": {
+      "cn": "卡俄斯"
+    },
+    "la": {
+      "cn": "拉"
+    },
+    "la_a": {
+      "cn": "拉"
+    },
+    "la_nvpu": {
+      "cn": "拉"
+    },
+    "lafeier": {
+      "cn": "拉斐尔"
+    },
+    "lafeiernvpu": {
+      "cn": "拉斐尔"
+    },
+    "lamr": {
+      "cn": "拉"
+    },
+    "langnv": {
+      "cn": "狼女"
+    },
+    "leilong": {
+      "cn": "雷龙"
+    },
+    "leilongmr": {
+      "cn": "雷龙"
+    },
+    "lilisimr": {
+      "cn": "莉莉丝"
+    },
+    "luoji": {
+      "cn": "洛基"
+    },
+    "luoji_ir": {
+      "cn": "洛基"
+    },
+    "luojimr": {
+      "cn": "洛基"
+    },
+    "luojiur": {
+      "cn": "洛基"
+    },
+    "luxifair": {
+      "cn": "路西法"
+    },
+    "luxifamr": {
+      "cn": "路西法"
+    },
+    "mdsir": {
+      "cn": "美杜莎"
+    },
+    "mdssdj": {
+      "cn": "美杜莎"
+    },
+    "meilinir": {
+      "cn": "梅林"
+    },
+    "mijialev1shatan": {
+      "cn": "米迦勒"
+    },
+    "mijialev3": {
+      "cn": "米迦勒"
+    },
+    "mijialev4": {
+      "cn": "米迦勒"
+    },
+    "mjzir": {
+      "cn": "摩羯座"
+    },
+    "mjznvpu": {
+      "cn": "摩羯座"
+    },
+    "ml_muyu": {
+      "cn": "米迦勒"
+    },
+    "mlsdj": {
+      "cn": "米迦勒"
+    },
+    "mojiezuoa": {
+      "cn": "摩羯座"
+    },
+    "mojiezuob": {
+      "cn": "摩羯座"
+    },
+    "mojiezuobg": {
+      "cn": "摩羯座"
+    },
+    "mojiezuomr": {
+      "cn": "摩羯座"
+    },
+    "mojiezuour": {
+      "cn": "摩羯座"
+    },
+    "nidehuoge": {
+      "cn": "尼德霍格"
+    },
+    "niemoxisiir": {
+      "cn": "涅墨西斯"
+    },
+    "nvpu_zhujue": {
+      "cn": "女仆主角"
+    },
+    "nvzhu_chunjie25": {
+      "cn": "女主"
+    },
+    "nvzhu_wanshengji": {
+      "cn": "女主"
+    },
+    "nvzhumr": {
+      "cn": "女主"
+    },
+    "nvzhushengdan": {
+      "cn": "女主"
+    },
+    "nvzhuur": {
+      "cn": "女主"
+    },
+    "nzir": {
+      "cn": "女主"
+    },
+    "panduolair": {
+      "cn": "潘多拉"
+    },
+    "pdlnvpu": {
+      "cn": "潘多拉"
+    },
+    "plmxs": {
+      "cn": "普罗米修斯"
+    },
+    "plmxsnvpu": {
+      "cn": "普罗米修斯"
+    },
+    "plmxsur": {
+      "cn": "普罗米修斯"
+    },
+    "poerxiusi_mr": {
+      "cn": "珀耳修斯"
+    },
+    "puluomixiusiir": {
+      "cn": "普罗米修斯"
+    },
+    "puluomixiusiur": {
+      "cn": "普罗米修斯"
+    },
+    "qiubite": {
+      "cn": "丘比特"
+    },
+    "qiubitec": {
+      "cn": "丘比特"
+    },
+    "qiubitemr": {
+      "cn": "丘比特"
+    },
+    "qiubitenvpu": {
+      "cn": "丘比特"
+    },
+    "qiubiteur": {
+      "cn": "丘比特"
+    },
+    "shaungyua": {
+      "cn": "双鱼座"
+    },
+    "shengnvzhendeir": {
+      "cn": "圣女贞德"
+    },
+    "shengxiaohu": {
+      "cn": "生肖·虎"
+    },
+    "sheshouzouir": {
+      "cn": "射手座"
+    },
+    "shizizuoir": {
+      "cn": "狮子座"
+    },
+    "shouniang_huli": {
+      "cn": "少女·狐狸座"
+    },
+    "shouniang_shizi": {
+      "cn": "少女·狮子座"
+    },
+    "shouniang_tiane": {
+      "cn": "少女·天鹅座"
+    },
+    "shouniang_xiong": {
+      "cn": "少女·熊座"
+    },
+    "shuangyu01": {
+      "cn": "双鱼座"
+    },
+    "shuangyub": {
+      "cn": "双鱼座"
+    },
+    "shuangyuzuoir": {
+      "cn": "双鱼座"
+    },
+    "shuangyuzuomr": {
+      "cn": "双鱼座"
+    },
+    "shuangyuzuour": {
+      "cn": "双鱼座"
+    },
+    "shuangzizuohunsha": {
+      "cn": "双子座"
+    },
+    "shuangzizuomr": {
+      "cn": "双子座"
+    },
+    "spzir": {
+      "cn": "水瓶座"
+    },
+    "spznp": {
+      "cn": "水瓶座"
+    },
+    "ssraboluo": {
+      "cn": "阿波罗"
+    },
+    "suoer": {
+      "cn": "索尔"
+    },
+    "suoermr": {
+      "cn": "索尔"
+    },
+    "suoerskel": {
+      "cn": "索尔"
+    },
+    "suoerssr": {
+      "cn": "索尔"
+    },
+    "suoerur": {
+      "cn": "索尔"
+    },
+    "syznvpu": {
+      "cn": "双鱼座"
+    },
+    "taiyangshenla": {
+      "cn": "太阳神·拉"
+    },
+    "tcz_mr": {
+      "cn": "天秤座"
+    },
+    "tianchengzuoir": {
+      "cn": "天秤座"
+    },
+    "tianzhao": {
+      "cn": "天照"
+    },
+    "tunshizhilang": {
+      "cn": "芬里尔"
+    },
+    "uraboluo": {
+      "cn": "阿波罗"
+    },
+    "weinasi": {
+      "cn": "维纳斯"
+    },
+    "weinasi_a": {
+      "cn": "维纳斯"
+    },
+    "weinasi_b": {
+      "cn": "维纳斯"
+    },
+    "weinasi_c": {
+      "cn": "维纳斯"
+    },
+    "weinasihunsha": {
+      "cn": "维纳斯"
+    },
+    "weinasiir": {
+      "cn": "维纳斯"
+    },
+    "weinasiur": {
+      "cn": "维纳斯"
+    },
+    "windini": {
+      "cn": "温蒂妮"
+    },
+    "wulier": {
+      "cn": "乌列尔"
+    },
+    "wulierhunsha": {
+      "cn": "乌列尔"
+    },
+    "wuliermr": {
+      "cn": "乌列尔"
+    },
+    "wulierur": {
+      "cn": "乌列尔"
+    },
+    "yadiannahunsha": {
+      "cn": "雅典娜"
+    },
+    "yadiannair": {
+      "cn": "雅典娜"
+    },
+    "yadiannamr": {
+      "cn": "雅典娜"
+    },
+    "yadiannaur": {
+      "cn": "雅典娜"
+    },
+    "yemengjiadeng": {
+      "cn": "耶梦加得"
+    },
+    "yidunir": {
+      "cn": "伊登"
+    },
+    "yidunqiujin": {
+      "cn": "伊登"
+    },
+    "yikaluosihunsha": {
+      "cn": "伊卡洛斯"
+    },
+    "yikalusi": {
+      "cn": "伊卡洛斯"
+    },
+    "yikalusimr": {
+      "cn": "伊卡洛斯"
+    },
+    "yikalusinvpu": {
+      "cn": "伊卡洛斯"
+    },
+    "yinghuayao": {
+      "cn": "樱花妖"
+    },
+    "yuanjieshen": {
+      "cn": "缘结神"
+    },
+    "yuanjieshenmr": {
+      "cn": "缘结神"
+    },
+    "yunwaijingssr": {
+      "cn": "云外镜"
+    },
+    "yutu": {
+      "cn": "玉兔"
+    },
+    "zhende_muyu": {
+      "cn": "圣女贞德"
+    },
+    "zhousi": {
+      "cn": "宙斯"
+    },
+    "zhousi_ir": {
+      "cn": "宙斯"
+    },
+    "zhousihunsha": {
+      "cn": "宙斯"
+    },
+    "zhousimr": {
+      "cn": "宙斯"
+    },
+    "zhousissr": {
+      "cn": "宙斯"
+    },
+    "zhujueganenjiepifi": {
+      "cn": "主角"
+    },
+    "zhujuehunsha": {
+      "cn": "主角"
+    },
+    "zhurongyao": {
+      "cn": "祝融"
+    },
+    "zs": {
+      "cn": "宙斯"
+    }
+  },
+  "skins": {},
+  "files": {
+    "spine_abl0": {
+      "cn": "阿波罗-0",
+      "m": "ssraboluo"
+    },
+    "spine_abl_cshs": {
+      "cn": "阿波罗-CSHS",
+      "m": "ssraboluo"
+    },
+    "spine_abl_hs": {
+      "cn": "阿波罗-HS",
+      "m": "aboluoMR+"
+    },
+    "spine_abl_mr": {
+      "cn": "阿波罗-MR",
+      "m": "aboluoMR"
+    },
+    "spine_abl_np": {
+      "cn": "阿波罗-女仆",
+      "m": "aboluoMR"
+    },
+    "spine_abl_ur": {
+      "cn": "阿波罗-UR",
+      "m": "uraboluo"
+    },
+    "spine_abl_ur_plus": {
+      "cn": "阿波罗-PLUS",
+      "m": "uraboluo"
+    },
+    "spine_ad0": {
+      "cn": "阿波罗-0",
+      "m": "aboluo_UR"
+    },
+    "spine_aetms_cshs": {
+      "cn": "阿尔忒弥斯-CSHS",
+      "m": "aetmsIR"
+    },
+    "spine_anbs_yz1": {
+      "cn": "阿尔忒弥斯-YZ1",
+      "m": "aetmsIR"
+    },
+    "spine_ars0": {
+      "cn": "阿瑞斯-0",
+      "m": "aruisi"
+    },
+    "spine_ars_cshs": {
+      "cn": "阿瑞斯-CSHS",
+      "m": "aruisi"
+    },
+    "spine_ars_hs": {
+      "cn": "阿瑞斯-HS",
+      "m": "aruisihunsha"
+    },
+    "spine_ars_mr": {
+      "cn": "阿瑞斯-MR",
+      "m": "aruisiMR"
+    },
+    "spine_ars_ur": {
+      "cn": "阿瑞斯-UR",
+      "m": "aruisiMR"
+    },
+    "spine_axl_cshs": {
+      "cn": "阿修罗-CSHS",
+      "m": "axiuluo"
+    },
+    "spine_axl_hs": {
+      "cn": "阿修罗-HS",
+      "m": "axiuluo"
+    },
+    "spine_axl_mr": {
+      "cn": "阿修罗-MR",
+      "m": "axiuluoMR"
+    },
+    "spine_bdzhyd_bdmy": {
+      "cn": "伊登-BDMY",
+      "m": "yidunqiujin"
+    },
+    "spine_bdzhyd_cshs": {
+      "cn": "伊登-CSHS",
+      "m": "yidunIR"
+    },
+    "spine_bldd1": {
+      "cn": "伊登-1",
+      "m": "yidunIR"
+    },
+    "spine_byz_cshs": {
+      "cn": "白羊座-CSHS",
+      "m": "byzir"
+    },
+    "spine_ce1": {
+      "cn": "白羊座-1",
+      "m": "byzir"
+    },
+    "spine_ce2": {
+      "cn": "嫦娥-2",
+      "m": "changeA"
+    },
+    "spine_ce_cshs": {
+      "cn": "嫦娥-CSHS",
+      "m": "changeA"
+    },
+    "spine_ce_hs": {
+      "cn": "嫦娥-HS",
+      "m": "changerIR"
+    },
+    "spine_ce_mr": {
+      "cn": "嫦娥-MR",
+      "m": "changeMR"
+    },
+    "spine_ce_np": {
+      "cn": "嫦娥-女仆",
+      "m": "changeMR"
+    },
+    "spine_ce_ur": {
+      "cn": "嫦娥-UR",
+      "m": "changeUR"
+    },
+    "spine_ce_ur_plus": {
+      "cn": "嫦娥-PLUS",
+      "m": "change"
+    },
+    "spine_cnz": {
+      "cn": "处女座",
+      "m": "cnz"
+    },
+    "spine_cnz_cshs": {
+      "cn": "处女座-CSHS",
+      "m": "chunvzuoIR"
+    },
+    "spine_dtslxf": {
+      "cn": "路西法",
+      "m": "luxifaMR"
+    },
+    "spine_dtslxf_cshs": {
+      "cn": "路西法-CSHS",
+      "m": "luxifaMR"
+    },
+    "spine_erbs1": {
+      "cn": "路西法-1",
+      "m": "luxifaIR"
+    },
+    "spine_flj0": {
+      "cn": "阿芙洛狄忒-0",
+      "m": "afuluodideSSR"
+    },
+    "spine_flj_mr": {
+      "cn": "弗丽嘉-MR",
+      "m": "fulijiaMR"
+    },
+    "spine_flj_np": {
+      "cn": "弗丽嘉-女仆",
+      "m": "fulijiaMR"
+    },
+    "spine_flj_ur": {
+      "cn": "阿芙洛狄忒-UR",
+      "m": "afuluodideUR"
+    },
+    "spine_flj_ur_plus": {
+      "cn": "阿芙洛狄忒-PLUS",
+      "m": "afuluodide"
+    },
+    "spine_fly0": {
+      "cn": "芙蕾雅-0",
+      "m": "Freyja_A"
+    },
+    "spine_fly1": {
+      "cn": "芙蕾雅-1",
+      "m": "Freyja_A"
+    },
+    "spine_fly_cshs": {
+      "cn": "芙蕾雅-CSHS",
+      "m": "fuleiyaIR"
+    },
+    "spine_fly_hs": {
+      "cn": "芙蕾雅-HS",
+      "m": "fuleiyahunsha"
+    },
+    "spine_fly_mr": {
+      "cn": "芙蕾雅-MR",
+      "m": "fuleiyaMR"
+    },
+    "spine_fly_np": {
+      "cn": "芙蕾雅-女仆",
+      "m": "fuleiya_nvpu"
+    },
+    "spine_fly_ur": {
+      "cn": "芙蕾雅-UR",
+      "m": "freyja UR"
+    },
+    "spine_fly_ur_plus": {
+      "cn": "芙蕾雅-PLUS",
+      "m": "fuleiya"
+    },
+    "spine_fly_znq": {
+      "cn": "芙蕾雅-ZNQ",
+      "m": "fuleiya"
+    },
+    "spine_ftss1": {
+      "cn": "芙蕾雅-1",
+      "m": "fuleiyazhounianqing"
+    },
+    "spine_gy_hs": {
+      "cn": "盖亚-HS",
+      "m": "gaiya"
+    },
+    "spine_gy_yz1": {
+      "cn": "盖亚-YZ1",
+      "m": "gaiya"
+    },
+    "spine_hfsts2": {
+      "cn": "赫菲斯托斯-2",
+      "m": "hfsts"
+    },
+    "spine_hhbsd_bdmy": {
+      "cn": "波塞冬-BDMY",
+      "m": "bosaidongqiujin"
+    },
+    "spine_hhbsd_cshs": {
+      "cn": "波塞冬-CSHS",
+      "m": "bosaidongIR"
+    },
+    "spine_hl1": {
+      "cn": "波塞冬-1",
+      "m": "bosaidongIR"
+    },
+    "spine_hl_cshs": {
+      "cn": "赫拉-CSHS",
+      "m": "helaMR"
+    },
+    "spine_hl_hs": {
+      "cn": "赫拉-HS",
+      "m": "hela"
+    },
+    "spine_hl_np": {
+      "cn": "赫拉-女仆",
+      "m": "hela"
+    },
+    "spine_hl_ur": {
+      "cn": "赫拉-UR",
+      "m": "hela"
+    },
+    "spine_hl_ur_plus": {
+      "cn": "赫拉-PLUS",
+      "m": "hela_UR"
+    },
+    "spine_hls_cshs": {
+      "cn": "荷鲁斯-CSHS",
+      "m": "helusiIR"
+    },
+    "spine_hls_np": {
+      "cn": "荷鲁斯-女仆",
+      "m": "helusiIR"
+    },
+    "spine_hls_ur": {
+      "cn": "荷鲁斯-UR",
+      "m": "helusiur"
+    },
+    "spine_hls_ur_plus": {
+      "cn": "荷鲁斯-PLUS",
+      "m": "helusiUR"
+    },
+    "spine_hmde1": {
+      "cn": "荷鲁斯-1",
+      "m": "helusiUR"
+    },
+    "spine_hmde_cshs": {
+      "cn": "海姆达尔-CSHS",
+      "m": "haimudaerMR+"
+    },
+    "spine_hmde_hs": {
+      "cn": "海姆达尔-HS",
+      "m": "haierdamuhunsha"
+    },
+    "spine_hmde_mr": {
+      "cn": "海姆达尔-MR",
+      "m": "haimudaerMR"
+    },
+    "spine_hmde_np": {
+      "cn": "海姆达尔-女仆",
+      "m": "haimudaerMR"
+    },
+    "spine_hmde_ur": {
+      "cn": "海姆达尔-UR",
+      "m": "haimudaerUR"
+    },
+    "spine_hyj0": {
+      "cn": "辉夜姬-0",
+      "m": "huiyeji_duanwu"
+    },
+    "spine_jnz_cshs": {
+      "cn": "金牛座-CSHS",
+      "m": "jnzir"
+    },
+    "spine_jxz": {
+      "cn": "巨蟹座",
+      "m": "jxz"
+    },
+    "spine_jxz_cshs": {
+      "cn": "巨蟹座-CSHS",
+      "m": "juxiezuoir"
+    },
+    "spine_jxz_my": {
+      "cn": "巨蟹座-沐浴",
+      "m": "juxiezuomuyu"
+    },
+    "spine_jyj0": {
+      "cn": "巨蟹座-0",
+      "m": "juxiezuomuyu"
+    },
+    "spine_kes_bdmy": {
+      "cn": "卡俄斯-BDMY",
+      "m": "kaesi"
+    },
+    "spine_kes_cshs": {
+      "cn": "卡俄斯-CSHS",
+      "m": "kaesiMR+"
+    },
+    "spine_kes_hs": {
+      "cn": "卡俄斯-HS",
+      "m": "kaesihunsha"
+    },
+    "spine_kes_mr": {
+      "cn": "卡俄斯-MR",
+      "m": "kaesiMR"
+    },
+    "spine_kes_ur": {
+      "cn": "卡俄斯-UR",
+      "m": "kaesi"
+    },
+    "spine_kes_ur_plus": {
+      "cn": "卡俄斯-PLUS",
+      "m": "kaesi"
+    },
+    "spine_lb0": {
+      "cn": "冰龙-0",
+      "m": "binglong"
+    },
+    "spine_lb_cshs": {
+      "cn": "冰龙-CSHS",
+      "m": "binglong"
+    },
+    "spine_lb_hs": {
+      "cn": "冰龙-HS",
+      "m": "binglonghunsha"
+    },
+    "spine_lb_mr": {
+      "cn": "冰龙-MR",
+      "m": "binglongMR"
+    },
+    "spine_lb_np": {
+      "cn": "冰龙-女仆",
+      "m": "binglong"
+    },
+    "spine_lb_ur": {
+      "cn": "冰龙-UR",
+      "m": "binglong"
+    },
+    "spine_lfe1": {
+      "cn": "冰龙-1",
+      "m": "binglongUR"
+    },
+    "spine_lh0": {
+      "cn": "火龙-0",
+      "m": "huolong"
+    },
+    "spine_lh_cshs": {
+      "cn": "火龙-CSHS",
+      "m": "huolongir"
+    },
+    "spine_lh_hs": {
+      "cn": "火龙-HS",
+      "m": "huolongir"
+    },
+    "spine_lh_mr": {
+      "cn": "火龙-MR",
+      "m": "huolonghunsha"
+    },
+    "spine_lh_ur": {
+      "cn": "火龙-UR",
+      "m": "huolong"
+    },
+    "spine_lhfr0": {
+      "cn": "火龙-0",
+      "m": "huolong"
+    },
+    "spine_lj_cshs": {
+      "cn": "洛基-CSHS",
+      "m": "luoji_IR"
+    },
+    "spine_lj_mr": {
+      "cn": "洛基-MR",
+      "m": "luojiMR"
+    },
+    "spine_lj_np": {
+      "cn": "洛基-女仆",
+      "m": "luoji"
+    },
+    "spine_lj_ur": {
+      "cn": "洛基-UR",
+      "m": "luojiUR"
+    },
+    "spine_ll0": {
+      "cn": "雷龙-0",
+      "m": "leilong"
+    },
+    "spine_ll_cshs": {
+      "cn": "雷龙-CSHS",
+      "m": "leilong"
+    },
+    "spine_ll_hs": {
+      "cn": "雷龙-HS",
+      "m": "leilong"
+    },
+    "spine_ll_mr": {
+      "cn": "雷龙-MR",
+      "m": "leilongMR"
+    },
+    "spine_ll_ur": {
+      "cn": "雷龙-UR",
+      "m": "leilongMR"
+    },
+    "spine_lznmxs_bdmy": {
+      "cn": "涅墨西斯-BDMY",
+      "m": "niemoxisiIR"
+    },
+    "spine_lznmxs_cshs": {
+      "cn": "涅墨西斯-CSHS",
+      "m": "niemoxisiIR"
+    },
+    "spine_mjl1": {
+      "cn": "米迦勒-1",
+      "m": "MiJiaLeV3"
+    },
+    "spine_mjl2": {
+      "cn": "米迦勒-2",
+      "m": "MiJiaLeV4"
+    },
+    "spine_mjl_yz1": {
+      "cn": "米迦勒-YZ1",
+      "m": "MiJiaLeV1shatan"
+    },
+    "spine_mjz1": {
+      "cn": "摩羯座-1",
+      "m": "mojiezuoB"
+    },
+    "spine_mjz2": {
+      "cn": "摩羯座-2",
+      "m": "mojiezuoB"
+    },
+    "spine_mjz_cshs": {
+      "cn": "摩羯座-CSHS",
+      "m": "mjzir"
+    },
+    "spine_mjz_hs": {
+      "cn": "摩羯座-HS",
+      "m": "mjzir"
+    },
+    "spine_mjz_mr": {
+      "cn": "摩羯座-MR",
+      "m": "mojiezuoMR"
+    },
+    "spine_mjz_np": {
+      "cn": "摩羯座-女仆",
+      "m": "mjznvpu"
+    },
+    "spine_mjz_ur": {
+      "cn": "摩羯座-UR",
+      "m": "mojiezuoUR"
+    },
+    "spine_ml_cshs": {
+      "cn": "梅林-CSHS",
+      "m": "meilinir"
+    },
+    "spine_ml_my": {
+      "cn": "米迦勒-沐浴",
+      "m": "ml_muyu"
+    },
+    "spine_ml_sd": {
+      "cn": "米迦勒-SD",
+      "m": "mlsdj"
+    },
+    "spine_pexs_cshs": {
+      "cn": "珀耳修斯-CSHS",
+      "m": "poerxiusi_mr"
+    },
+    "spine_plmxs_cshs": {
+      "cn": "普罗米修斯-CSHS",
+      "m": "puluomixiusiIR"
+    },
+    "spine_plmxs_mr": {
+      "cn": "普罗米修斯-MR",
+      "m": "plmxs"
+    },
+    "spine_plmxs_np": {
+      "cn": "普罗米修斯-女仆",
+      "m": "plmxs"
+    },
+    "spine_plmxs_ur": {
+      "cn": "普罗米修斯-UR",
+      "m": "plmxsnvpu"
+    },
+    "spine_plmxs_ur_plus": {
+      "cn": "普罗米修斯-PLUS",
+      "m": "PLMXS-UR"
+    },
+    "spine_qbt0": {
+      "cn": "丘比特-0",
+      "m": "Cupid_C"
+    },
+    "spine_qbt1": {
+      "cn": "丘比特-1",
+      "m": "Cupid_B"
+    },
+    "spine_qbt2": {
+      "cn": "丘比特-2",
+      "m": "Cupid_B"
+    },
+    "spine_qbt3": {
+      "cn": "丘比特-3",
+      "m": "qiubiteC"
+    },
+    "spine_qbt_bdmy": {
+      "cn": "丘比特-BDMY",
+      "m": "qiubite"
+    },
+    "spine_qbt_cshs": {
+      "cn": "丘比特-CSHS",
+      "m": "qiubiteMR"
+    },
+    "spine_qbt_hs": {
+      "cn": "丘比特-HS",
+      "m": "qiubite"
+    },
+    "spine_qbt_np": {
+      "cn": "丘比特-女仆",
+      "m": "qiubitenvpu"
+    },
+    "spine_qbt_ur": {
+      "cn": "丘比特-UR",
+      "m": "qiubiteUR"
+    },
+    "spine_r2": {
+      "cn": "拉-2",
+      "m": "la_a"
+    },
+    "spine_r3": {
+      "cn": "拉-3",
+      "m": "la_a"
+    },
+    "spine_r_bdmy": {
+      "cn": "拉-BDMY",
+      "m": "la"
+    },
+    "spine_r_cshs": {
+      "cn": "拉-CSHS",
+      "m": "laMR+"
+    },
+    "spine_r_hs": {
+      "cn": "拉-HS",
+      "m": "la"
+    },
+    "spine_r_mr": {
+      "cn": "拉-MR",
+      "m": "la"
+    },
+    "spine_r_np": {
+      "cn": "拉-女仆",
+      "m": "la_nvpu"
+    },
+    "spine_r_ur": {
+      "cn": "太阳神·拉-UR",
+      "m": "taiyangshen-la"
+    },
+    "spine_r_yz1": {
+      "cn": "太阳神·拉-YZ1",
+      "m": "taiyangshen-la"
+    },
+    "spine_se0": {
+      "cn": "索尔-0",
+      "m": "suoerSSR"
+    },
+    "spine_se_cshs": {
+      "cn": "索尔-CSHS",
+      "m": "suoerMR"
+    },
+    "spine_se_mr": {
+      "cn": "索尔-MR",
+      "m": "suoerMR"
+    },
+    "spine_se_ur": {
+      "cn": "索尔-UR",
+      "m": "suoerUR"
+    },
+    "spine_se_ur_plus": {
+      "cn": "索尔-PLUS",
+      "m": "suoer"
+    },
+    "spine_smzpdl_cshs": {
+      "cn": "索尔-CSHS",
+      "m": "suoer.skel"
+    },
+    "spine_smzpdl_np": {
+      "cn": "潘多拉-女仆",
+      "m": "pdlnvpu"
+    },
+    "spine_sn0": {
+      "cn": "潘多拉-0",
+      "m": "pdlnvpu"
+    },
+    "spine_sn_aefry": {
+      "cn": "少女·天鹅座-AEFRY",
+      "m": "shouniang_tiane"
+    },
+    "spine_sn_ales": {
+      "cn": "少女·狮子座-ALES",
+      "m": "shouniang_shizi"
+    },
+    "spine_sn_bhjy": {
+      "cn": "北海巨妖-BHJY",
+      "m": "beihaijuyao"
+    },
+    "spine_sn_brm": {
+      "cn": "北海巨妖-BRM",
+      "m": "beihaijuyao"
+    },
+    "spine_sn_bsn": {
+      "cn": "不死鸟-BSN",
+      "m": "businiao"
+    },
+    "spine_sn_fjl": {
+      "cn": "风精灵-FJL",
+      "m": "fengjingling"
+    },
+    "spine_sn_glns": {
+      "cn": "少女·熊座-GLNS",
+      "m": "shouniang_xiong"
+    },
+    "spine_sn_hjl": {
+      "cn": "火精灵-HJL",
+      "m": "huojingling"
+    },
+    "spine_sn_ht": {
+      "cn": "芬里尔-HT",
+      "m": "tunshizhilang"
+    },
+    "spine_sn_jwh": {
+      "cn": "九尾狐-JWH",
+      "m": "jiuweihu"
+    },
+    "spine_sn_ln": {
+      "cn": "狼女-LN",
+      "m": "langnv"
+    },
+    "spine_sn_ndhg": {
+      "cn": "尼德霍格-NDHG",
+      "m": "nidehuoge"
+    },
+    "spine_sn_sjl": {
+      "cn": "温蒂妮-SJL",
+      "m": "windini"
+    },
+    "spine_sn_wstl": {
+      "cn": "少女·狐狸座-WSTL",
+      "m": "shouniang_huli"
+    },
+    "spine_sn_ymjd": {
+      "cn": "耶梦加得-YMJD",
+      "m": "yemengjiadeng"
+    },
+    "spine_sn_yt": {
+      "cn": "玉兔-YT",
+      "m": "yutu"
+    },
+    "spine_spz_cshs": {
+      "cn": "水瓶座-CSHS",
+      "m": "spzir"
+    },
+    "spine_spz_np": {
+      "cn": "水瓶座-女仆",
+      "m": "spzir"
+    },
+    "spine_ssanbs_cshs": {
+      "cn": "阿努比斯-CSHS",
+      "m": "anubisiIR"
+    },
+    "spine_ssz_cshs": {
+      "cn": "阿努比斯-CSHS",
+      "m": "anubisiIR"
+    },
+    "spine_sszzd_cshs": {
+      "cn": "圣女贞德-CSHS",
+      "m": "shengnvzhendeIR"
+    },
+    "spine_sszzd_my": {
+      "cn": "圣女贞德-沐浴",
+      "m": "zhende_muyu"
+    },
+    "spine_syz1": {
+      "cn": "双鱼座-1",
+      "m": "shuangyuB"
+    },
+    "spine_syz2": {
+      "cn": "双鱼座-2",
+      "m": "shuangyuB"
+    },
+    "spine_syz_cshs": {
+      "cn": "双鱼座-CSHS",
+      "m": "shuangyuzuoIR"
+    },
+    "spine_syz_mr": {
+      "cn": "双鱼座-MR",
+      "m": "shuangyuzuoMR"
+    },
+    "spine_syz_np": {
+      "cn": "双鱼座-女仆",
+      "m": "syznvpu"
+    },
+    "spine_syz_ur": {
+      "cn": "双鱼座-UR",
+      "m": "syznvpu"
+    },
+    "spine_syz_ur_plus": {
+      "cn": "双鱼座-PLUS",
+      "m": "shuangyu01"
+    },
+    "spine_szz_cshs": {
+      "cn": "狮子座-CSHS",
+      "m": "shizizuoIR"
+    },
+    "spine_tcz": {
+      "cn": "天秤座",
+      "m": "tcz_MR"
+    },
+    "spine_tcz_cshs": {
+      "cn": "天秤座-CSHS",
+      "m": "tcz_MR"
+    },
+    "spine_tdfx_bdmy": {
+      "cn": "伏羲-BDMY",
+      "m": "fuxiqiujin"
+    },
+    "spine_tdfx_cj": {
+      "cn": "伏羲-CJ",
+      "m": "fxcj"
+    },
+    "spine_tdfx_cshs": {
+      "cn": "伏羲-CSHS",
+      "m": "fxcj"
+    },
+    "spine_tzds0": {
+      "cn": "伏羲-0",
+      "m": "fuxiir"
+    },
+    "spine_tzds3": {
+      "cn": "天照-3",
+      "m": "tianzhao"
+    },
+    "spine_user_cj2024": {
+      "cn": "女主-CJ2024",
+      "m": "nvzhu_chunjie25"
+    },
+    "spine_user_cshs": {
+      "cn": "女主-CSHS",
+      "m": "nzIR"
+    },
+    "spine_user_gej": {
+      "cn": "主角-GEJ",
+      "m": "zhujueganenjiepifi"
+    },
+    "spine_user_hs": {
+      "cn": "主角-HS",
+      "m": "zhujuehunsha"
+    },
+    "spine_user_mr": {
+      "cn": "女主-MR",
+      "m": "nvzhuMR"
+    },
+    "spine_user_np": {
+      "cn": "女仆主角-女仆",
+      "m": "nvpu_zhujue"
+    },
+    "spine_user_sd": {
+      "cn": "女主-SD",
+      "m": "nvzhu-shengdan"
+    },
+    "spine_user_ur": {
+      "cn": "女主-UR",
+      "m": "nvzhu UR"
+    },
+    "spine_user_wsj2024": {
+      "cn": "女主-WSJ2024",
+      "m": "nvzhu_wanshengji"
+    },
+    "spine_user_yy0": {
+      "cn": "祝融-YY0",
+      "m": "zhu-rongyao"
+    },
+    "spine_user_yz1": {
+      "cn": "祝融-YZ1",
+      "m": "zhu-rongyao"
+    },
+    "spine_wle_cshs": {
+      "cn": "乌列尔-CSHS",
+      "m": "wulier"
+    },
+    "spine_wle_hs": {
+      "cn": "乌列尔-HS",
+      "m": "wulierhunsha"
+    },
+    "spine_wle_mr": {
+      "cn": "乌列尔-MR",
+      "m": "wulierMR"
+    },
+    "spine_wle_ur": {
+      "cn": "乌列尔-UR",
+      "m": "wulierUR"
+    },
+    "spine_wle_ur_plus": {
+      "cn": "乌列尔-PLUS",
+      "m": "wulierUR+"
+    },
+    "spine_wns0": {
+      "cn": "维纳斯-0",
+      "m": "weinasi_C"
+    },
+    "spine_wns1": {
+      "cn": "维纳斯-1",
+      "m": "weinasi_B"
+    },
+    "spine_wns2": {
+      "cn": "维纳斯-2",
+      "m": "weinasi_A"
+    },
+    "spine_wns_cshs": {
+      "cn": "维纳斯-CSHS",
+      "m": "weinasiir"
+    },
+    "spine_wns_hs": {
+      "cn": "维纳斯-HS",
+      "m": "weinasihunsha"
+    },
+    "spine_wns_mr": {
+      "cn": "嫦娥-MR",
+      "m": "changeMR"
+    },
+    "spine_wns_ur": {
+      "cn": "维纳斯-UR",
+      "m": "weinasi"
+    },
+    "spine_wns_ur_plus": {
+      "cn": "维纳斯-PLUS",
+      "m": "weinasiUR+"
+    },
+    "spine_xf1": {
+      "cn": "维纳斯-1",
+      "m": "weinasiUR+"
+    },
+    "spine_ydn0": {
+      "cn": "雅典娜-0",
+      "m": "Athena ssr"
+    },
+    "spine_ydn_cshs": {
+      "cn": "雅典娜-CSHS",
+      "m": "yadiannair"
+    },
+    "spine_ydn_hs": {
+      "cn": "雅典娜-HS",
+      "m": "yadiannahunsha"
+    },
+    "spine_ydn_mr": {
+      "cn": "雅典娜-MR",
+      "m": "yadiannaMR"
+    },
+    "spine_ydn_ur_plus": {
+      "cn": "雅典娜-PLUS",
+      "m": "yadiannaUR"
+    },
+    "spine_yh0": {
+      "cn": "雅典娜-0",
+      "m": "yadiannaUR"
+    },
+    "spine_yhy0": {
+      "cn": "樱花妖-0",
+      "m": "yinghuayao"
+    },
+    "spine_ykls_bdmy": {
+      "cn": "伊卡洛斯-BDMY",
+      "m": "yikalusi"
+    },
+    "spine_ykls_cshs": {
+      "cn": "伊卡洛斯-CSHS",
+      "m": "yikalusiMR+"
+    },
+    "spine_ykls_hs": {
+      "cn": "伊卡洛斯-HS",
+      "m": "yikaluosihunsha"
+    },
+    "spine_ykls_mr": {
+      "cn": "伊卡洛斯-MR",
+      "m": "yikalusiMR"
+    },
+    "spine_ykls_np": {
+      "cn": "伊卡洛斯-女仆",
+      "m": "yikalusinvpu"
+    },
+    "spine_ywj0": {
+      "cn": "云外镜-0",
+      "m": "yunwaijingSSR"
+    },
+    "spine_ywj_cshs": {
+      "cn": "双子座-CSHS",
+      "m": "shuangzizuoMR"
+    },
+    "spine_ywj_hs": {
+      "cn": "双子座-HS",
+      "m": "shuangzizuoMR"
+    },
+    "spine_ywj_mr": {
+      "cn": "双子座-MR",
+      "m": "shuangzizuoMR"
+    },
+    "spine_yzmnlls": {
+      "cn": "莉莉丝",
+      "m": "lilisiMR"
+    },
+    "spine_yzmnlls_cshs": {
+      "cn": "莉莉丝-CSHS",
+      "m": "lilisiMR+"
+    },
+    "spine_zfzmds_cshs": {
+      "cn": "美杜莎-CSHS",
+      "m": "mdsir"
+    },
+    "spine_zfzmds_sd": {
+      "cn": "美杜莎-SD",
+      "m": "mdssdj"
+    },
+    "spine_zrnz_cshs": {
+      "cn": "缘结神-CSHS",
+      "m": "yuanjieshen"
+    },
+    "spine_zrnz_mr": {
+      "cn": "缘结神-MR",
+      "m": "yuanjieshenMR"
+    },
+    "spine_zrnz_np": {
+      "cn": "缘结神-女仆",
+      "m": "yuanjieshen"
+    },
+    "spine_zrnz_ur": {
+      "cn": "缘结神-UR",
+      "m": "yuanjieshen"
+    },
+    "spine_zrnz_ur_plus": {
+      "cn": "缘结神-PLUS",
+      "m": "yuanjieshen"
+    },
+    "spine_zs0": {
+      "cn": "宙斯-0",
+      "m": "zhousiSSR"
+    },
+    "spine_zs_cshs": {
+      "cn": "宙斯-CSHS",
+      "m": "zhousi_ir"
+    },
+    "spine_zs_hs": {
+      "cn": "宙斯-HS",
+      "m": "zhousi_ir"
+    },
+    "spine_zs_mr": {
+      "cn": "宙斯-MR",
+      "m": "zhousiMR"
+    },
+    "spine_zs_ur": {
+      "cn": "宙斯-UR",
+      "m": "zhousi"
+    },
+    "spine_zs_ur_plus": {
+      "cn": "宙斯-PLUS",
+      "m": "zs"
+    },
+    "spine_ztslfe_hs": {
+      "cn": "拉斐尔-HS",
+      "m": "lafeier"
+    },
+    "spine_ztslfe_np": {
+      "cn": "拉斐尔-女仆",
+      "m": "lafeier"
+    }
+  }
+}

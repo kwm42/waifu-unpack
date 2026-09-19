@@ -1,0 +1,350 @@
+"""Spine 模型资源组装：从 Unity bundle 中提取并组合成可用的 spine 工程目录。
+
+产出物为 Spine 原生格式：
+    base.atlas  (TextAsset，内容为 atlas 文本)
+    base.skel   (TextAsset，二进制/JSON 骨架)
+    <贴图>.png
+
+商家常见的存法：TextAsset 的 m_Name 带 `.asset` / `.txt` / `.bytes` 后缀，
+这里统一剥掉后再与 atlas 内容里引用的贴图文件名对齐。
+"""
+
+from __future__ import annotations
+
+import logging
+import re
+from dataclasses import dataclass, field
+from typing import TYPE_CHECKING, Iterable, Optional
+
+from PIL import Image
+
+if TYPE_CHECKING:
+    import UnityPy
+
+log = logging.getLogger(__name__)
+
+TEXT_EXTENSIONS = (".txt", ".asset", ".bytes", ".json", ".skel", ".atlas")
+SKEL_EXTENSIONS = (".skel", ".json")
+ATLAS_EXTENSIONS = (".atlas",)
+_TEXTURE_REF_RE = re.compile(r"^\s*(\S+?\.(?:png|jpe?g))$", re.IGNORECASE)
+_STRIP_TAIL_RE = re.compile(r"\.(?:asset|txt|bytes)$", re.IGNORECASE)
+
+
+@dataclass
+class SpineExport:
+    """一个独立的 spine 模型（已配齐骨架+atlas，贴图尽量配齐）。
+
+    base 用于身份解析（角色/皮肤目录）；role 决定次级目录
+    （character=人物 / background=背景）；variant>0 表示同角色目录下的
+    多套变体，文件名加 `_N` 后缀区分。
+    """
+
+    base: str
+    atlas_text: str
+    skel_bytes: bytes
+    role: str = "character"
+    variant: int = 0
+    textures: dict[str, bytes] = field(default_factory=dict)
+    missing_textures: list[str] = field(default_factory=list)
+
+    @property
+    def stem(self) -> str:
+        """导出文件名用的基名（变体加 _N 后缀，从 _2 起）。"""
+        return self.base if self.variant == 0 else f"{self.base}_{self.variant + 1}"
+
+
+def _clean_asset_name(name: str) -> str:
+    """去掉 Unity 导出的资源名尾巴（.asset/.txt/.bytes），转小写对比。"""
+    return _STRIP_TAIL_RE.sub("", name)
+
+
+def _asset_stem(name: str) -> str:
+    """去掉后缀（含 .atlas/.skel/.json），得到分组主键。"""
+    return re.sub(r"\.(?:atlas|skel|json)$", "", _clean_asset_name(name), flags=re.IGNORECASE)
+
+
+def _text_asset_bytes(script) -> bytes:
+    """TextAsset.m_Script 可能是 bytes/str 或含 surrogate 的 str，统一还原成字节。"""
+    if isinstance(script, str):
+        return script.encode("utf-8", "surrogateescape")
+    if isinstance(script, (bytes, bytearray)):
+        return bytes(script)
+    return str(script).encode("utf-8", "replace")
+
+
+def iter_spine_exports(env: "UnityPy.Environment") -> list[SpineExport]:
+    """扫描一个 bundle，返回其中可组成的 spine 模型列表。
+
+    同名资产可能有多套（如人物/背景两套模型），处理策略：
+    1. atlas 区域名与骨架 token 重叠度贪心配对（避免交叉配错）；
+    2. 贴图通过 SpineAtlasAsset -> Material._MainTex 链精确配对；
+    3. 区域数最多的一套作为人物（character），其余作为背景（background）。
+    """
+    objects = list(env.objects)
+
+    text_assets: list[tuple[str, int, bytes]] = []
+    for obj in objects:
+        try:
+            if obj.type.name == "TextAsset":
+                ta = obj.read()
+                text_assets.append(
+                    (str(ta.m_Name), obj.path_id, _text_asset_bytes(ta.m_Script))
+                )
+        except Exception:  # noqa: BLE001 - 单个对象失败不影响整体
+            continue
+
+    atlases: dict[str, list[tuple[int, str]]] = {}
+    skeletons: dict[str, list[bytes]] = {}
+    for name, pid, data in text_assets:
+        base = _asset_stem(name)
+        low = _clean_asset_name(name).lower()
+        if low.endswith(ATLAS_EXTENSIONS):
+            atlases.setdefault(base, []).append(
+                (pid, data.decode("utf-8", errors="replace"))
+            )
+        elif low.endswith(SKEL_EXTENSIONS):
+            skeletons.setdefault(base, []).append(data)
+
+    if not atlases and not skeletons:
+        return []
+
+    png_by_pid, png_by_name, atlas_to_tex = _texture_plan(objects)
+    used_pngs: set[bytes] = set()
+
+    exports: list[SpineExport] = []
+
+    # 以 atlas 为核心组装；区域数最多者视为人物，其余为背景
+    for base, atlas_list in sorted(atlases.items()):
+        skel_list = skeletons.pop(base, [])
+        pairs = _pair_sets(skel_list, atlas_list)
+        pairs.sort(key=lambda p: (len(_atlas_regions(p[2])), len(p[0])), reverse=True)
+
+        for idx, (skel_data, atlas_pid, atlas_text) in enumerate(pairs):
+            if idx == 0:
+                role, var = "character", 0
+            else:
+                role, var = "background", idx - 1
+            textures, missing = _match_textures(
+                atlas_text, atlas_pid, png_by_pid, png_by_name, atlas_to_tex,
+                used_pngs,
+            )
+            exp = SpineExport(
+                base=base,
+                role=role,
+                variant=var,
+                atlas_text=atlas_text,
+                skel_bytes=skel_data,
+                textures=textures,
+                missing_textures=missing,
+            )
+            for miss in exp.missing_textures:
+                log.warning(
+                    "atlas %r (role=%s) 引用的贴图 %r 在 bundle 内未找到",
+                    base,
+                    role,
+                    miss,
+                )
+            exports.append(exp)
+
+        if len(pairs) < len(atlas_list):
+            log.warning(
+                "同名 atlas 共 %d 套，只配对出 %d 个（缺配套骨架的 atlas 已跳过）",
+                len(atlas_list),
+                len(pairs),
+            )
+
+    # 没有 atlas 的骨架（可能是被包进 SkeletonDataAsset 的情况，先记日志）
+    for base, skel_list in skeletons.items():
+        for idx, skel_data in enumerate(skel_list):
+            role = "character" if idx == 0 else "background"
+            stub = base if idx == 0 else f"{base}_{idx + 1}"
+            log.info("骨架 %r 无配套 atlas，仅尝试直接输出原始文件", stub)
+            exports.append(
+                SpineExport(
+                    base=base, role=role, variant=idx, atlas_text="", skel_bytes=skel_data
+                )
+            )
+    return exports
+
+
+def _match_textures(
+    atlas_text: str,
+    atlas_pid: int,
+    png_by_pid: dict[int, bytes],
+    png_by_name: dict[str, list[bytes]],
+    atlas_to_tex: dict[int, int],
+    used_pngs: set[bytes],
+) -> tuple[dict[str, bytes], list[str]]:
+    """按 atlas 引用名取贴图：优先用 Material 链精确配对，失败则按名兜底。
+
+    used_pngs 记录"已被前几套精确配对使用的贴图字节"，
+    名字兜底时跳过它们，避免同 bundle 多套同名贴图互抢（角色/背景各拿各的）。
+    返回 (贴图, 缺失列表)。
+    """
+    textures: dict[str, bytes] = {}
+    missing: list[str] = []
+    exact_pid = atlas_to_tex.get(atlas_pid, 0)
+    exact_png = png_by_pid.get(exact_pid)
+    if exact_png is not None:
+        used_pngs.add(exact_png)
+        for ref in _atlas_texture_refs(atlas_text):
+            textures[ref] = exact_png
+        return textures, missing
+    for ref in _atlas_texture_refs(atlas_text):
+        want = re.sub(r"\.(?:png|jpe?g)$", "", ref, flags=re.IGNORECASE).lower()
+        candidates = png_by_name.get(want) or []
+        png = next((b for b in candidates if b not in used_pngs), None)
+        if png is None and candidates:
+            png = candidates[0]
+        if png is not None:
+            textures[ref] = png
+            used_pngs.add(png)
+        else:
+            missing.append(ref)
+    return textures, missing
+
+
+def _atlas_regions(atlas_text: str) -> set[str]:
+    """提取 atlas 中的区域名（去掉 page 文件名、属性行、空行）。"""
+    regions: set[str] = set()
+    for line in atlas_text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        lower = line.lower()
+        if lower.endswith((".png", ".jpg", ".jpeg")) or ":" in line:
+            continue
+        if lower.startswith(("rotate", "xy", "size", "orig", "offset", "index")):
+            continue
+        regions.add(line)
+    return regions
+
+
+def _skel_tokens(skel_data: bytes) -> frozenset[str]:
+    """粗略抽取骨架中出现的标识符 token，与 atlas 区域名做交集估计配对。"""
+    return frozenset(
+        m.decode() for m in re.findall(rb"[A-Za-z][A-Za-z0-9_]{2,39}", skel_data)
+    )
+
+
+def _pair_sets(
+    skel_list: list[bytes], atlas_list: list[tuple[int, str]]
+) -> list[tuple[bytes, int, str]]:
+    """按内容把骨架与 atlas 做贪心最优配对，返回 [(skel, atlas_pid, atlas), ...]。"""
+    if len(atlas_list) == 1 and len(skel_list) == 1:
+        apid, atext = atlas_list[0]
+        return [(skel_list[0], apid, atext)]
+
+    used_skel: set[int] = set()
+    used_atlas: set[int] = set()
+    pairs: list[tuple[bytes, int, str]] = []
+    while True:
+        best: Optional[tuple[float, int, int]] = None
+        for si, sk in enumerate(skel_list):
+            if si in used_skel:
+                continue
+            sktoks = _skel_tokens(sk)
+            for ai, (_, atext) in enumerate(atlas_list):
+                if ai in used_atlas:
+                    continue
+                regs = _atlas_regions(atext)
+                score = len(regs & sktoks) / max(len(regs), 1)
+                if best is None or score > best[0]:
+                    best = (score, si, ai)
+        if best is None or best[0] <= 0:
+            break
+        _, si, ai = best
+        apid, atext = atlas_list[ai]
+        pairs.append((skel_list[si], apid, atext))
+        used_skel.add(si)
+        used_atlas.add(ai)
+    return pairs
+
+
+def _atlas_texture_refs(atlas_text: str) -> list[str]:
+    refs: list[str] = []
+    for line in atlas_text.splitlines():
+        m = _TEXTURE_REF_RE.match(line)
+        if m and not line.lstrip().startswith("-"):
+            refs.append(m.group(1))
+    return refs
+
+
+def _texture_plan(objects) -> tuple[dict[int, bytes], dict[str, list[bytes]], dict[int, int]]:
+    """扫描贴图与 SpineAtlasAsset/Material 的引用关系。
+
+    返回 (png_by_pid, png_by_name, atlas_to_tex)：
+    - png_by_pid: Texture2D object path_id -> PNG 字节
+    - png_by_name: 小写贴图名 -> [PNG 字节, ...]（同名多张时全保留）
+    - atlas_to_tex: TextAsset(atlas) path_id -> Texture2D path_id
+    """
+    png_by_pid: dict[int, bytes] = {}
+    png_by_name: dict[str, list[bytes]] = {}
+    material_main_tex: dict[int, int] = {}
+    atlas_to_tex: dict[int, int] = {}
+
+    for obj in objects:
+        r = obj.read()
+        t = obj.type
+        if t.name == "Texture2D":
+            img = r.image
+            if img is None:
+                continue
+            if img.mode not in ("RGBA", "RGB"):
+                img = img.convert("RGBA")
+            buf = _image_to_png_bytes(img, str(getattr(r, "m_Name", "")))
+            png_by_pid[obj.path_id] = buf
+            tex_name = str(getattr(r, "m_Name", "")).lower()
+            if "." in tex_name:
+                tex_name = tex_name.split(".")[0]
+            png_by_name.setdefault(tex_name, []).append(buf)
+        elif t.name == "Material":
+            tex_pid = _material_main_texture(r)
+            if tex_pid is not None:
+                material_main_tex[obj.path_id] = tex_pid
+        elif t.name == "MonoBehaviour":
+            m_name = str(getattr(r, "m_Name", ""))
+            if m_name.endswith("_Atlas"):
+                atlas_pid = _pptr_id(getattr(r, "atlasFile", None))
+                if atlas_pid is None:
+                    continue
+                for mat_pptr in getattr(r, "materials", None) or []:
+                    if _pptr_id(mat_pptr) in material_main_tex:
+                        atlas_to_tex[atlas_pid] = material_main_tex[_pptr_id(mat_pptr)]
+                        break
+    return png_by_pid, png_by_name, atlas_to_tex
+
+
+def _pptr_id(pptr) -> Optional[int]:
+    if pptr is None:
+        return None
+    pid = getattr(pptr, "path_id", None)
+    return pid if isinstance(pid, int) else None
+
+
+def _material_main_texture(mat) -> Optional[int]:
+    """Material.m_SavedProperties.m_TexEnvs['_MainTex'].m_Texture.path_id"""
+    props = getattr(mat, "m_SavedProperties", None)
+    if props is None:
+        return None
+    envs = getattr(props, "m_TexEnvs", None)
+    target = None
+    if isinstance(envs, dict):
+        target = envs.get("_MainTex")
+    elif envs:
+        envs = dict(envs)
+        target = envs.get("_MainTex")
+    if target is None:
+        return None
+    return _pptr_id(getattr(target, "m_Texture", None))
+
+
+def _image_to_png_bytes(img: Image.Image, name: str) -> bytes:
+    """导出 PNG。异步兼容 Auto 处理 16 位模式。"""
+    import io
+
+    if img.mode == "I;16":
+        img = img.point(lambda i: i * (1 / 256)).convert("L")
+    buf = io.BytesIO()
+    img.save(buf, format="PNG", optimize=True)
+    return buf.getvalue()

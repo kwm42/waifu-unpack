@@ -1,0 +1,23 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ---- 构建/测试工具产物 ----
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- 解包输出（大体积，不入库）----
+/output/
+samples/*/out/
+
+# ---- 样本资源（大体积，不入库）----
+/samples/
+
+# ---- 运行日志 ----
+*.log
+run*.log
+temp_chk
