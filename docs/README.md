@@ -111,6 +111,6 @@ waifu-unpack/
   docs/                    本文档
 ```
 
-详细设计见 [architecture.md](./architecture.md)，格式研究见 [game-research.md](./game-research.md)。
+详细设计见 [architecture.md](./architecture.md)，各游戏解包指南见 [games/](./games/index.md)，格式研究见 [game-research.md](./game-research.md)。
 
 > 约定：任何影响行为/结论的修改必须同步更新相关文档，见 [conventions.md](./conventions.md#文档同步规则强制)。

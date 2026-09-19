@@ -7,3 +7,4 @@ Spine（`.skel` + `.atlas` + `.png`）、Live2D（`moc3 + model3.json + textures
 - [architecture.md](./architecture.md) — 代码分层、核心抽象、如何新增游戏
 - [game-research.md](./game-research.md) — 各游戏资源格式研究结论与已知坑
 - [conventions.md](./conventions.md) — 输出结构、命名规则、增量语义、决策记录
+- [games/](./games/index.md) — 各游戏专用解包指南（流程/注意事项）
