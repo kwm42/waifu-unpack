@@ -49,14 +49,14 @@ out_root/idleangels/<bundle文件名>/angel/   ← 人物模型（区域最多�
 ## 输出结构（碧蓝航线，2026-09）
 
 ```
-out_root/azurlane/<bundle文件名>/angel/   ← 人物/单套模型
-                                     bg/  ← 背景模型（同名多套时）
+out_root/azurlane/spine/<bundle文件名>/angel/   ← 人物/单套模型
+                                      bg/  ← 背景模型（同名多套时）
    每套三件套：<基名>.atlas  <基名>.skel  <atlas各页引用的贴图名>.png
 
-out_root/azurlane/<bundle文件名>/live2d/ <- Live2D 模型一套
+out_root/azurlane/live2d/<bundle文件名>/ <- Live2D 模型一套
    <基名>.moc3  <基名>.model3.json  <基名>.physics3.json（有则）  <贴图名>.png
 
-out_root/azurlane/<bundle文件名>/illust/ <- 立绘切片 PNG（painting）
+out_root/azurlane/painting/<bundle文件名>/illust/ <- 立绘切片 PNG（painting）
    <key>.png   （同 bundle 内有同名多张时 <key>_2.png、<key>_3.png…）
 ```
 

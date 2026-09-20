@@ -20,7 +20,7 @@ python -m waifu_unpack azurlane --input samples\azurlane\spinepainting --out sam
 产出（输出结构见 [conventions.md](../conventions.md#输出结构azurlane)）：
 
 ```
-samples\out\azurlane\
+output\azurlane\spine\
   jishang_3_asmr_res\angel\    ← 目录名 = bundle 文件名；整套模型（人物与背景同包的一套）
     jishang_3_asmr.atlas   jishang_3_asmr.skel
     jishang_3_asmr.png    jishang_3_asmr2.png    jishang_3_asmr3.png
@@ -43,12 +43,12 @@ python -m waifu_unpack azurlane --input samples\azurlane\live2d --out samples\ou
 产出（可直接拖进官方 Cubism Viewer 加载）：
 
 ```
-samples\out\azurlane\
-  aijier_4\live2d\
+output\azurlane\live2d\
+  aijier_4\
     aijier_4.moc3   aijier_4.model3.json   aijier_4.physics3.json
     texture_00.png  texture_01.png
-  dafeng_7\live2d\   （1 张贴图时只有 texture_00.png）
-  guanghui_7\live2d\
+  dafeng_7\   （1 张贴图时只有 texture_00.png）
+  guanghui_7\
 ```
 
 - `.moc3` 是**烘焙式 Cubism prefab**里内嵌的**原生 moc3 二进制**（CubismMoc 组件原始字节，
@@ -62,10 +62,10 @@ samples\out\azurlane\
 python -m waifu_unpack azurlane --input samples\azurlane\painting --out samples\out --types painting --progress
 ```
 
-产出（`illust/` 目录，立绘 PNG）：
+产出（`painting/` 目录，立绘 PNG）：
 
 ```
-samples\out\azurlane\
+output\azurlane\painting\
   haitian_3_rw_tex\illust\    ← 目录名 = bundle 文件名
     haitian_3_rw.png  haitian_3_rw_2.png   ← 同名 2 张（贴图尺寸不同），变体 _2
   kalvbudisi_2_tex\illust\kalvbudisi_2.png

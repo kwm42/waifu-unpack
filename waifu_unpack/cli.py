@@ -34,6 +34,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="要导出的内容类型，逗号分隔: spine,live2d,painting (默认 spine)",
     )
     p.add_argument("--force", action="store_true", help="忽略增量状态，重新处理所有文件")
+    p.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="不导出，仅列出需要处理（未导出或已变化）的 bundle，并保存到 "
+        "out/<游戏>/pending.txt（与 --force 连用则列出全部）",
+    )
     p.add_argument("--progress", action="store_true", help="显示处理进度（原地刷新的进度行）")
     p.add_argument("--verbose", action="store_true", help="输出调试日志")
     return p
@@ -132,6 +138,7 @@ def main(argv: list[str] | None = None) -> int:
 
     bundles = list(adapter.iter_bundles(args.input))
     prog = Progress(args.progress, len(bundles))
+    pending: list[str] = []
     for path, rel in bundles:
         scanned += 1
         prog.update(scanned, rel)
@@ -143,6 +150,11 @@ def main(argv: list[str] | None = None) -> int:
             continue
 
         digest = adapter.digest(raw)
+        if args.dry_run:
+            if args.force or state.needs_process(rel, digest):
+                pending.append(rel)
+            continue
+
         if args.force or state.needs_process(rel, digest):
             try:
                 env = adapter.open_bundle(raw, rel)
@@ -163,12 +175,33 @@ def main(argv: list[str] | None = None) -> int:
 
     state.save()
     prog.finish()
+    if args.dry_run:
+        _report_pending(game_out, pending, args.force)
+        log.info(
+            "扫描 %d：待处理 %d（未导出或已变化）", scanned, len(pending),
+        )
+        return 0
     log.info(
         "完成: 扫描 %d，处理 %d，跳过(未变化) %d，失败/无法解析 %d，耗时 %.1fs (%.1f 个/秒)",
         scanned, processed, skipped, failed,
         time.time() - t0, scanned / max(time.time() - t0, 1e-9),
     )
     return 0
+
+
+def _report_pending(game_out: Path, pending: list[str], force: bool) -> None:
+    if not pending:
+        log.info("没有需要处理的 bundle，全部已导出且内容未变化。")
+        return
+    for rel in pending:
+        print(f"  {rel}")
+    try:
+        path = game_out / "pending.txt"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("\n".join(pending) + "\n", encoding="utf-8")
+        log.info("%s 清单已写入 %s (%d 个)", "(强制全量)" if force else "待处理", path, len(pending))
+    except OSError as exc:
+        log.warning("无法写入清单: %s", exc)
 
 
 def _write_artifacts(out_root: Path, artifacts) -> list[str]:

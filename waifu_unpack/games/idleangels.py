@@ -18,7 +18,6 @@ from pathlib import Path
 import UnityPy
 
 from waifu_unpack.core import spine
-from waifu_unpack.core.painting import export_painting_textures
 from waifu_unpack.games.base import DEFAULT_SKIN, GameAdapter
 
 log = logging.getLogger(__name__)

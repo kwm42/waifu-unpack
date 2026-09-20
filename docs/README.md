@@ -56,7 +56,19 @@ python -m waifu_unpack idleangels --input <资源目录> --out <输出目录> --
 
 # 详细日志
 python -m waifu_unpack idleangels --input <资源目录> --out <输出目录> --verbose
+
+# 仅检查：不导出，只列出"待处理（未导出或已变化）"的 bundle，并写 out/<游戏>/pending.txt
+python -m waifu_unpack idleangels --input <资源目录> --out <输出目录> --types spine --dry-run
 ```
+
+### 交互式向导（推荐）
+
+根目录 `unpack_menu.py` 提供菜单化操作：**全量解包 / 增量解包 / 检查待解包** / 更换输入目录与类型。
+它会列出项目内默认候选目录（`samples/<游戏>/…`），也支持手动输入任意路径（如
+`F:\live2d\碧蓝航线\AssetBundles\live2d`）。所有实际工作交给 CLI 子进程执行：
+
+```powershell
+python unpack_menu.py
 
 > 资源目录 = 手机 / 模拟器拷出来的最外层文件夹（工具递归扫 `*.ab/.bundle/*.unity3d/*.asset/*.bytes` 及魔数嗅探兜底）。
 

@@ -12,11 +12,11 @@
 - painting：一张大 Texture2D + Sprite（textureRect 定义内容区），只导切片 PNG，
   不做 Mesh 重组（复用 core/painting.py）。
 
-导出结构（out_root 默认 = 项目根/output）：
-    output/azurlane/<bundle文件名>/angel|bg/<base>.atlas|.skel|<贴图>.png
-    output/azurlane/<bundle文件名>/live2d/<base>.moc3|<base>.model3.json|
+导出结构（out_root 默认 = 项目根/output，按类型分组）：
+    output/azurlane/spine/<bundle文件名>/angel|bg/<base>.atlas|.skel|<贴图>.png
+    output/azurlane/live2d/<bundle文件名>/<base>.moc3|<base>.model3.json|
         <base>.physics3.json|<贴图>.png
-    output/azurlane/<bundle文件名>/illust/<key>.png
+    output/azurlane/painting/<bundle文件名>/illust/<key>.png
 """
 
 from __future__ import annotations
@@ -60,27 +60,31 @@ class AzurLane(GameAdapter):
     ) -> list:
         from waifu_unpack.games.base import ExportArtifact, sanitize_component
 
+        def typed(prefix: str, items: list[ExportArtifact]) -> list[ExportArtifact]:
+            return [ExportArtifact(f"{prefix}/{it.relpath}", it.data) for it in items]
+
         artifacts: list[ExportArtifact] = []
 
         if "spine" in types:
             loc = sanitize_component(bundle_stem or "spine")
+            items: list[ExportArtifact] = []
             for exp in spine.iter_spine_exports(env):
                 role_dir = "angel" if exp.role == "character" else "bg"
                 log.info("Spine: %s / %s (%s)", loc, role_dir, exp.stem)
-                artifacts.append(
+                items.append(
                     self.artifact_in(
                         loc, DEFAULT_SKIN, f"{role_dir}/{exp.stem}.atlas",
                         exp.atlas_text.encode("utf-8"),
                     )
                 )
-                artifacts.append(
+                items.append(
                     self.artifact_in(
                         loc, DEFAULT_SKIN, f"{role_dir}/{exp.stem}.skel",
                         exp.skel_bytes,
                     )
                 )
                 for png_name, png_bytes in exp.textures.items():
-                    artifacts.append(
+                    items.append(
                         self.artifact_in(loc, DEFAULT_SKIN, f"{role_dir}/{png_name}", png_bytes)
                     )
                 for miss in exp.missing_textures:
@@ -89,59 +93,63 @@ class AzurLane(GameAdapter):
             # 同名变体共享贴图，按输出路径去重
             seen: set[str] = set()
             deduped: list[ExportArtifact] = []
-            for a in artifacts:
+            for a in items:
                 if a.relpath in seen:
                     continue
                 seen.add(a.relpath)
                 deduped.append(a)
-            artifacts = deduped
+            artifacts.extend(typed("spine", deduped))
 
         if "live2d" in types:
             loc = sanitize_component(bundle_stem or "live2d")
+            items = []
             for exp in live2d.iter_live2d_exports(env):
                 base = exp.base or bundle_stem or "model"
                 log.info("Live2D: %s / %s", loc, base)
-                artifacts.append(
+                items.append(
                     self.artifact_in(
-                        loc, DEFAULT_SKIN, f"live2d/{base}.moc3", exp.moc3
+                        loc, DEFAULT_SKIN, f"{base}.moc3", exp.moc3
                     )
                 )
                 model3 = json.dumps(exp.model3_json, ensure_ascii=False, indent=2).encode(
                     "utf-8"
                 )
-                artifacts.append(
+                items.append(
                     self.artifact_in(
-                        loc, DEFAULT_SKIN, f"live2d/{base}.model3.json", model3
+                        loc, DEFAULT_SKIN, f"{base}.model3.json", model3
                     )
                 )
                 if exp.physics3_json is not None:
                     physics3 = json.dumps(
                         exp.physics3_json, ensure_ascii=False, indent=2
                     ).encode("utf-8")
-                    artifacts.append(
+                    items.append(
                         self.artifact_in(
-                            loc, DEFAULT_SKIN, f"live2d/{base}.physics3.json", physics3
+                            loc, DEFAULT_SKIN, f"{base}.physics3.json", physics3
                         )
                     )
                 for png_name, png_bytes in exp.textures.items():
-                    artifacts.append(
+                    items.append(
                         self.artifact_in(
-                            loc, DEFAULT_SKIN, f"live2d/{png_name}.png", png_bytes
+                            loc, DEFAULT_SKIN, f"{png_name}.png", png_bytes
                         )
                     )
                 for miss in exp.missing:
                     log.warning("Live2D 缺失: %s", miss)
+            artifacts.extend(typed("live2d", items))
 
         if "painting" in types:
             loc = sanitize_component(bundle_stem or "painting")
+            items = []
             for exp in painting.iter_painting_exports(env):
                 log.info("Painting: %s / %s", loc, exp.stem)
-                artifacts.append(
+                items.append(
                     self.artifact_in(
                         loc, DEFAULT_SKIN, f"illust/{exp.stem}.png", exp.png
                     )
                 )
                 for miss in exp.missing:
                     log.warning("Painting 缺失: %s", miss)
+            artifacts.extend(typed("painting", items))
 
         return artifacts
