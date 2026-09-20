@@ -46,6 +46,18 @@ out_root/idleangels/<bundle文件名>/angel/   ← 人物模型（区域最多�
 - 贴图文件名 = **atlas 第一行引用的名字**（大小写原样），文件与 atlas 同目录，这套裁切才正确。
 - 状态文件 `<out>/<game>/.waifu-unpack-state.json` 不算导出物。
 
+## 输出结构（棕色尘埃2，2026-09）
+
+```
+out_root/browndust2/<角色>/illust/   ← 立绘整图（Texture2D → PNG，非切片）
+                           angel/   ← 人物 Spine（待真实样本验证）
+                           bg/      ← 背景 Spine
+```
+
+- **目录名 ≠ bundle 文件名**：BD2 本地缓存是 hash 目录（`Shared/<bundleName>/<hash>/__data`），
+  用 `file.json` 的 `readableName` 推导角色标识（`charXXXXXX` → names 表中文，否则取路径尾段）。
+- 同一 bundle 若含多套仍走 `angel/`、`bg/` 子目录 + 同名变体 `_2/_3`（与 IdleAngels 同规则）。
+
 ## 命名规则 v3（IdleAngels，用户拍板 2026-09）
 
 **三名字来源**：bundle 文件名（目录名，权威）/ m_Name（Unity 资源对象名，真实角色 id）/ 中文（仅索引）。
@@ -122,6 +134,11 @@ out_root/idleangels/<bundle文件名>/angel/   ← 人物模型（区域最多�
    修：缩进回到类内。教训：改 Python 类方法用最小 diff。
 7. **去重列表推导写反**：`a if (a in seen) or seen.add(a)` 把首现元素全丢。
    修：显式 for 循环。
+8. **BD2 版本头被抹，误改头部字节**：头版本串是 `string_to_null`（无长度前缀）且位置/长度
+   对不上 v7/v8 len-prefixed 假设，直接替换 → 破坏头对齐 → **LZ4 解压报 Error code: 8**。
+   修：改走 UnityPy 官方机制 `UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.22f1"`
+   （`BundleReader._fallback_version()` 上下文管理器，打开期间设置并还原）。
+   教训：改投 UnityPy 官方配置项，别手工改格式字节。
 
 ## 环境备忘
 

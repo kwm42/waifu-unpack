@@ -90,7 +90,7 @@ samples\out\idleangels\
 - [x] IdleAngels 端到端
 - [~] names/idleangels.json 中文映射填充（`files` 表 247/445 已自动生成，留空需人工补）
 - [ ] 碧蓝航线（spine + live2d + painting）
-- [ ] 棕色尘埃2（forced_unity_version + catalog + painting）
+- [~] 棕色尘埃2（forced_unity_version fallback + catalog 还原、myroom 贴图样本打通；待真实 Spine 样本）
 - [ ] Live2D 组装落地
 
 ## 目录结构

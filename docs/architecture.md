@@ -7,6 +7,7 @@ cli.py                参数解析、扫目录、增量判断、写文件、汇�
   └ games/<key>.py    GameAdapter：判别 bundle、打开、组装导出物、命名
        └ core/        通用能力
             bundlereader   读取 bundle（嵌套/脏字节/版本修复）
+            catalog        目录清单（Addressables file.json，BD2 用）
             incremental    增量状态
             spine / live2d / painting  内容组装
 ```
@@ -62,17 +63,32 @@ artifacts ──▶ 写盘 + state.mark_done(rel, md5, 文件名列表) ──�
   1) 正常单包；
   2) 前置脏字节（如文件第一个字节是 `0x00`）；
   3) **双层嵌套**——外层是旧引擎空壳、内层偏移处另有真 UnityFS（IdleAngels 样本即此模式）。
-- `_maybe_fix_blanked_header`：Unity 版本字段被抹成 `0.0.0` 时，若配置了
-  `forced_unity_version` 则改写头部字段（v7/v8 头布局：魔数8 + version(int32) + 版本串）。版本字段在 offset **8**（不是 6）。
+- `_maybe_fix_blanked_header`：旧版"版本字段被抹成 `0.0.0`"的 v7/v8 len-prefixed 头布局
+  修复（魔数8 + version(int32) + 长度前缀版本串）。⚠️ 对 BD2 **不适用**（它不是这个布局），
+  BD2 的正确姿势见下。
+- **版本头被抹的通用解法（BD2）**：不要改头部字节（BD2 的版本串是 `string_to_null`，
+  位置/长度对不上，直接替换会破坏 LZ4 解压）。正解是设
+  `UnityPy.config.FALLBACK_UNITY_VERSION = forced_unity_version`（BundleFile 与
+  SerializedFile 解析版本时都会读它）。`BundleReader` 用 `_fallback_version()` 上下文
+  管理器在打开期间临时设置并还原，同时用 `warnings` 屏蔽该 fallback 的烦人告警。
 - 全部候选解析失败 → 抛 `BundleOpenError`，附文件头 hex 便于回传样本。
 
-## 四、core/incremental.py
+## 四、core/catalog.py（目录清单，BD2）
+
+- 解析 Addressables 的 `file.json`：`bundleName`（磁盘目录名）↔ `readableName`（逻辑路径）
+  ↔ `hash`（子目录名）↔ `size`。`Catalog.discover(base_dir)` 递归找
+  `com.unity.addressables/file.json` 并加载。
+- 用途：BD2 本地缓存是 `Shared/<bundleName>/<hash>/__data` 纯 hash 命名，
+  靠它把 hash 还原成可读的角色/路径，也校验 size。
+- 数据形态见 game-research.md「棕色尘埃2」节。
+
+## 五、core/incremental.py
 
 - 状态文件：`<out>/<game>/.waifu-unpack-state.json`，记录每个 bundle 相对路径 → `{md5, artifacts[]}`。
 - 规则：md5 与记录一致 → 跳过；不一致/未记录 → 处理；输入中被删除 → **不清理**历史输出与记录（只加不改不删）。
 - 写入用临时文件 + `replace`，避免半截状态。损坏的旧状态仅告警并按空基线重来。
 
-## 五、core/spine.py（重点）
+## 六、core/spine.py（重点）
 
 ### 产出模型 `SpineExport`
 
@@ -106,7 +122,7 @@ atlas_text / skel_bytes / textures{引用名: png} / missing_textures
   均匀缩放不影响 uv 正确性，属游戏数据本身。
 - 二进制 skel 头 `\x1c` + 7 字节 hash + 字符串表，字符串区包含 attachment 名（用于配对估分）。
 
-## 六、UnityPy 1.x 关键 API
+## 七、UnityPy 1.x 关键 API
 
 踩过的坑，务必记住：
 
@@ -123,7 +139,7 @@ atlas_text / skel_bytes / textures{引用名: png} / missing_textures
   （`to_dict()`/`dict(r)` 不可用）。不确定有哪些字段用 `dir(r)` 过滤下划线。
 - `Texture2D.image` 返回 PIL Image（RGBA/RGB），后台格式（ASTC 等 48 号之类）也能解。
 
-## 七、新增一款游戏清单
+## 八、新增一款游戏清单
 
 1. `games/<key>.py`：继承 `GameAdapter`，实现 `is_bundle_file` / `extract`，
    （必要时覆写 `open_bundle`、设 `forced_unity_version`）。
@@ -131,7 +147,7 @@ atlas_text / skel_bytes / textures{引用名: png} / missing_textures
 3. `names/<key>.json`：建空表。
 4. 放样本到 `samples/<key>/`，跑 `python -m waifu_unpack <key> --input samples\<key> --out samples\out --verbose` 验证。
 
-## 八、开发环境提示（Windows / PowerShell）
+## 九、开发环境提示（Windows / PowerShell）
 
 - **控制台中文乱码 = 代码页问题，不是数据问题**：文件是 UTF-8，PowerShell 用 GBK 显示。
   无碍时忽略；需要看得舒服就 `$env:PYTHONIOENCODING="utf-8"` 再跑。

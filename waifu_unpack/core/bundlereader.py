@@ -12,10 +12,13 @@ from __future__ import annotations
 import hashlib
 import logging
 import struct
+import warnings
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterator, Optional
 
 import UnityPy
+import UnityPy.config
 
 log = logging.getLogger(__name__)
 
@@ -84,18 +87,19 @@ class BundleReader:
         errors: list[str] = []
         failed_magic = True
 
-        for offset in _iter_unityfs_offsets(raw):
-            failed_magic = False
-            data = self._maybe_fix_blanked_header(raw[offset:])
-            try:
-                env = UnityPy.Environment()
-                env.load_file(data, name=f"{name}@{offset:#x}")
-                score = len(list(env.objects))
-            except Exception as exc:  # noqa: BLE001
-                errors.append(f"candidate@{offset:#x}: {exc}")
-                continue
-            if score > best_score:
-                best_env, best_score = env, score
+        with self._fallback_version():
+            for offset in _iter_unityfs_offsets(raw):
+                failed_magic = False
+                data = self._maybe_fix_blanked_header(raw[offset:])
+                try:
+                    env = UnityPy.Environment()
+                    env.load_file(data, name=f"{name}@{offset:#x}")
+                    score = len(list(env.objects))
+                except Exception as exc:  # noqa: BLE001
+                    errors.append(f"candidate@{offset:#x}: {exc}")
+                    continue
+                if score > best_score:
+                    best_env, best_score = env, score
 
         if best_env is None:
             if failed_magic:
@@ -109,6 +113,27 @@ class BundleReader:
                 f"无法解析 bundle {name!r}:\n  " + "\n  ".join(errors[-5:])
             )
         return best_env
+
+    @contextmanager
+    def _fallback_version(self) -> Iterator[None]:
+        """临时把 UnityPy 的全局 FALLBACK_UNITY_VERSION 设为强制版本。
+
+        棕色尘埃2 把 Unity 版本串抹成 `0.0.0` / `5.x.x`，改动头部字节
+        会破坏 LZ4 解压；正确做法是走 UnityPy 官方的 fallback 配置
+        （BundleFile 与 SerializedFile 解析版本时都会读取它）。
+        用完即还原，避免污染同进程其它 bundle。
+        """
+        if not self.forced_unity_version:
+            yield
+            return
+        old = UnityPy.config.FALLBACK_UNITY_VERSION
+        UnityPy.config.FALLBACK_UNITY_VERSION = self.forced_unity_version
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", UnityPy.config.UnityVersionFallbackWarning)
+                yield
+        finally:
+            UnityPy.config.FALLBACK_UNITY_VERSION = old
 
     def _maybe_fix_blanked_header(self, data: bytes) -> bytes:
         """若 BundleFile 头中的 Unity 版本字段为 0.0.0 且提供了显式版本，

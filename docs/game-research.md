@@ -54,15 +54,69 @@
 - **Spine** 3.8，atlas/skel 是 TextAsset（与 IA 同构，可复用 `core/spine.py`）。
 - 命名：角色/皮肤有约定目录名，多半可直接映射。
 
-## 棕色尘埃2 BrownDust2 🕐 待验证样本（适配器为 stub）
+## 棕色尘埃2 BrownDust2 ✅ 首个样本已打通（myroom 贴图 bundle）
 
-- **仅 Spine 4.1**，无 Live2D。
-- **"加密"实为 Unity 版本头被抹**：bundle 头版本显示 `5.x.x` 且版本串 `0.0.0`，
-  让 UnityPy 解析失败。绕过：给 `forced_unity_version`（当前配置 **2022.3.22f1**；
-  社区也有人用 2022.2.17f1，若失败可换）。
-- 本地缓存目录**全部是 hash 文件名**、无 container path → 需要 **catalog 文件**还原逻辑路径。
-- 静态立绘在 **illust** bundle 里。
-- 立绘可能不是切片而是整图（待样本确认）。
+### 游戏本体
+
+- 安卓包 `com.neowizgames.browndust2`，Unity 引擎，**仅 Spine 4.1**，无 Live2D。
+- **"加密"实为 Unity 版本头被抹**：bundle 头显示 `5.x.x` 且版本串 `0.0.0`，
+  让 UnityPy 解析失败。绕过见下方「版本头被抹的正确姿势」。
+
+### 资源结构与目录清单（文件放在 `com.unity.addressables/`）
+
+- `file.json`：Addressables **bundle 清单**（2023 条），字段：
+  `bundleName`（磁盘目录名）/ `readableName`（逻辑路径）/ `hash`（子目录名）/
+  `fileHash` / `size` / `bundleType`（Remote 2013 / Local 10）。
+  角色 key 形如 `char060302`（char + 6 位数字），212 个去重角色。
+- `catalog_alpha.json`：65MB 的 ContentCatalogData，asset 地址（285,756 条）在
+  `m_InternalIds`，asset↔bundle 映射在压缩分段 `m_KeyDataString / m_BucketDataString /
+  m_EntryDataString`（Addressables 二进制格式，先用 file.json 的 bundleName↔readableName
+  就够了，暂未反序列化三段）。
+- `catalog_alpha.hash`：目录哈希（32 字节），一般用不到。
+
+### 本地缓存磁盘布局（关键）
+
+- 不是 `.bundle` 扩展名文件，而是 **UnityWebRequest 缓存目录**：
+
+  ```
+  Shared/<bundleName>/<hash>/__data   ← 真实 bundle（无扩展名，固定叫 __data）
+  Shared/<bundleName>/<hash>/__info   ← 缓存元数据（4 行文本，非 bundle）
+  ```
+
+- `<bundleName>` = file.json 的 `bundleName`；`<hash>` = 该条的 `hash` 字段。
+  `is_bundle_file` 据此判断：文件名 == `__data` 即视为 bundle，`__info` 忽略。
+- 样本：`samples/browndust2/Shared/006b27eb4c9d701a12f2f9e553e42bab/
+  a7313786577fc9ea037b24b6c55239c0/__data`（227,671 字节）。
+  对应逻辑路径 `common-spritetexture-myroom_assets_common/char060302/myroom`。
+
+### 样本内容（myroom 贴图 bundle）
+
+- 90 个对象：**Texture2D ×73 + Sprite ×16 + AssetBundle ×1**，无 atlas/skel（是贴图包，不是 Spine）。
+- 73 张 128×128 贴图 = `Char060302_<姿势>_<方向>_<帧>`（Idle/Move/Sit × 8 方向），
+  container key 形如 `Char060302_Idle_BR_01.png`，面向 myroom（休息室）场景。
+- AssetBundle.m_Name = `<bundleName>.bundle`（`006b27eb....bundle`），
+  可用它反查 catalog 拿逻辑路径，不依赖 rel 文本解析。
+
+### 版本头被抹的正确姿势（踩坑，勿重复）
+
+- **不能直接改头部字节**：BundleFile 头的版本串是 `string_to_null`（无长度前缀），
+  直接替换会破坏头字节对齐/长度，LZ4 解压直接报
+  `Decompression failed ... Error code: 8`。
+- 且旧 `_maybe_fix_blanked_header` 假设的 v7/v8 len-prefixed 布局与该头不符
+  （formatVersion 字段读出来也不是 7/8），对 BD2 根本不会触发。
+- **正解 = UnityPy 官方 fallback**：`UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.22f1"`
+  （BundleFile 与 SerializedFile 解析版本时都读它）。`BundleReader` 已封装为
+  `forced_unity_version`，打开前临时设置、用完还原，用 `warnings` 屏蔽烦人告警。
+- 若 2022.3.22f1 有 bundle 解析失败，备选 **2022.2.17f1** 可换。
+
+### 输出语义（BD2 适配器 v1）
+
+- 目录名 = catalog `readableName` 推导的角色标识（优先 `charXXXXXX` 查 names 表中文，
+  没有则取逻辑路径尾段），**不再用 hash 文件目录名**（不可读、会撞名）。
+- spine（复用 `core/spine.py`）：`<角色>/angel|bg/<base>.atlas|.skel|<贴图>.png`。
+- painting（整图，非切片）：`<角色>/illust/<贴图名>.png`。
+- 该适配器尚未拿到真实 Spine（atlas/skel）样本，`_extract_spine` 路径待真实 spine
+  bundle 验证；myroom 样本只走了 painting 路径。
 
 ## 已知问题与待办（新人不踩坑）
 
@@ -78,7 +132,9 @@
 samples/
   idleangels/spine_dtslxf_cshs.ab   双层嵌套 Spine 样本（唯一样本，端到端验证用）
   azurlane/    （空，待样本）
-  browndust2/  （空，待样本）
+  browndust2/  com.unity.addressables/（file.json / catalog_alpha.json / catalog_alpha.hash）
+               Shared/006b27eb.../a731.../__data + __info（myroom 贴图 bundle，已验证）
+  browndust2   待补：真实 Spine（atlas/skel）bundle + illust 立绘 bundle
 ```
 
 > 拿到新游戏的样本后：放到 `samples/<game>/`，对着 `python -m waifu_unpack <game> --input samples\<game> --out samples\out --verbose` 的输出逐条验证；解析不了先看 `open_bundle` 报错里的文件头 hex。
