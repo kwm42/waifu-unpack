@@ -46,13 +46,41 @@
 - atlas 写 `size: 4096,4096` 但贴图是 2048×2048：游戏**默认画质降采样**产物，均匀缩放不影响预览，属游戏数据本身。
 - bundle 命名 `spine_<缩写>_<缩写>.ab`，与导出无关。
 
-## 碧蓝航线 AzurLane 🕐 待验证样本（适配器为 stub）
+## 碧蓝航线 AzurLane ✅ spinepainting / live2d / painting 均已打通
 
-- 资源在 `AssetBundles/` 下，分 **painting（立绘）/ live2d / spinepainting** 等分类目录。
-- **立绘 painting** = Mesh + Texture2D 切片，导出时**只导切片 PNG**（用户拍板：不做 Mesh 重组；分辨率取游戏内原分辨率）。
-- **Live2D** = Cubism3：moc3 在 MonoBehaviour / TextAsset 里，需解剖具体包装方式（Cubism 3 的 .bytes 倒在 MonoBehaviour 里常见）。
-- **Spine** 3.8，atlas/skel 是 TextAsset（与 IA 同构，可复用 `core/spine.py`）。
-- 命名：角色/皮肤有约定目录名，多半可直接映射。
+### 游戏本体
+
+- 安卓端资源在 `AssetBundles/` 下，分 `painting`（立绘）/ `live2d` / `spinepainting` 等分类目录。
+- 样本文件**无扩展名**（如 `spinepainting/jishang_3_asmr_res`），头是 UnityFS v8。
+- 版本串被抹成 **`5.x.x`**（不是 BD2 的 `0.0.0`），真实版本在 revision 字段
+  （`2022.3.51f1` / `2022.3.62f3`），靠 `forced_unity_version="2022.3.51f1"`
+  FALLBACK 机制解析（51f1 实测可打开 62f3 样本）。
+- `painting` = 大图 + Sprite 切片（**只导切片 PNG**，用户拍板，已落地，按 textureRect 裁切）；
+  `live2d` = 烘焙式 Cubism prefab（已落地，含原生 moc3，见下方「azurlane live2d」节）；
+  `spinepainting` = **Spine 3.8**（已打通）。
+
+### 样本结构（sample: spinepainting/telafaerjia_res，17 对象）
+
+```
+TextAsset 'telafaerjia.skel'  (1123536 B, 头 \x1c 二进制 Spine 3.8)
+TextAsset 'telafaerjia.atlas' (14083 B, 引用 5 个 page: telafaerjia.png/2/3/4/5)
+MonoBehaviour 'telafaerjia_Atlas'        ← SpineAtlasAsset: atlasFile + materials[]
+MonoBehaviour 'telafaerjia_SkeletonData'
+Material 'telafaerjia_telafaerjia' ... 'telafaerjia_telafaerjia5'  (×5, 每 page 一个)
+Texture2D 'telafaerjia' ... 'telafaerjia5'  (4096×4096/2048, ×5)
+```
+
+### 多页 atlas 配对（踩坑，勿重复）
+
+- atlas 是**多页**：一个 `.atlas` 引用多张 png，`SpineAtlasAsset.materials[]`
+  **顺序**与 atlas 页面一一对应，Material `_MainTex` 即该页贴图。
+- 旧 `_texture_plan` 单遍扫描 + `break` 只取第一张 → 多页 atlas 所有页全配成同一张
+  （telafaerjia 5 张贴图内容各异却全被配成页面 1，仅首次样本恰好漏显）。
+- 另一个隐蔽坑：**单遍扫描时 Atlas MonoBehaviour 可能先于其 Material 被遍历**，
+  会只收集到"恰好已见过的 Material"（telafaerjia 只剩第 4 个）。修法是两遍：
+  先收贴图 bitmap 与 Material 链，再解析 Atlas 的 materials[] → 逐页精确配对
+  （`atlas_to_textures` 为 atlas_pid → [tex_pid,...]）。
+- 名字兜底（atlas page 名 = Texture2D.m_Name+`.png`）保留为保底。
 
 ## 棕色尘埃2 BrownDust2 ✅ 首个样本已打通（myroom 贴图 bundle）
 
@@ -118,20 +146,58 @@
 - 该适配器尚未拿到真实 Spine（atlas/skel）样本，`_extract_spine` 路径待真实 spine
   bundle 验证；myroom 样本只走了 painting 路径。
 
+### azurlane live2d（烘焙式 Cubism prefab，2026-09 已验证）
+
+- 样本：`samples/azurlane/live2d/` 下 `aijier_4` / `dafeng_7` / `guanghui_7`
+  （**无扩展名文件**，UnityFS v8，版本串抹成 `5.x.x`，真实 2022.3.51f1 等，
+  同 spinepainting 用 `forced_unity_version="2022.3.51f1"` 打开）。
+- **结构**：5.9k~8.3k 个对象 = GameObject/Transform（`ArtMesh558`/`Part60`…）+
+  MeshFilter/MeshRenderer + MonoBehaviour（`CubismRenderer`/`CubismDrawable`/
+  `CubismParameter`/`CubismPart`）+ AnimationClip×32，容器 key 形如
+  `Assets/ArtResource/Live2d/<key>/<key>.prefab` —— 模型被**烘焙成 Unity Mesh/组件**。
+- **关键数据位**：原生 `.moc3` 二进制内嵌在 **CubismMoc** MonoBehaviour 序列化字节里，
+  从 `MOC3` 魔数起到对象末尾（aijier 4622976 / dafeng 4637632 / guanghui 4073280 字节，
+  头 = `MOC3` + u32 版本(4/5) + 信息块偏移表）；`<key>.physics3` 是 TextAsset；
+  贴图是 Texture2D（`texture_00` 4096² 等）；**没有原生 model3.json**。
+- **产出**：提取 `.moc3` + `.physics3.json` + `texture_0x.png`，由 `core/live2d.py`
+  组装最小可行 `model3.json`（Groups/HitAreas 置空，官方 Cubism Viewer 可加载）。
+
+### azurlane painting（大图 + Sprite 切片，2026-09 已验证）
+
+- 样本：`samples/azurlane/painting/` 下 `haitian_3_rw_tex` / `kalvbudisi_2_tex` /
+  `maliluosi_3_doa_tex`（无扩展名，UnityFS v8，版本串 `5.x.x`，同前用 forced_unity_version）。
+- **结构**：对象极少（3~7 个）= Texture2D 若干 + Sprite + 可选 Mesh + AssetBundle。
+  haitian 有两套（Sprite×2 / Texture×2 / Mesh×2，贴图 2048×1790 与 1792 各一张）；
+  kalvbudisi 无 Mesh，maliluosi 有 Mesh。
+- **关键数据位**：Sprite 的 `m_RD.texture`（PPtr，指大图）+ `m_RD.textureRect`（内容矩形，
+  x=0, y=0, 宽高≈纹理减去右/下透明 padding）；`m_IndexBuffer` / `m_PhysicsShape` /
+  Mesh = 立绘网格与碰撞形状（**不做 Mesh 重组，用户拍板只导切片 PNG**）。
+- **产出**：`core/painting.py` 按 textureRect 从大图裁出内容区（左下原点转左上），
+  `illust/<key>.png`；同名多张自动 `_2/_3`。
+- 注意：Unity 的 textureRect 原点在纹理左下；若 Sprite 缺 textureRect 越界则兜底整图。
+
 ## 已知问题与待办（新人不踩坑）
 
 1. **版本头被抹**判据：`BLANKED_VERSIONS = {"0.0.0", ""}`（bundlereader.py）；版本字段在 offset 8。
+   ⚠️ 碧蓝的版本串是 `5.x.x`（不在该集），走 `forced_unity_version` FALLBACK 解析，不触发改写。
 2. **TextAsset 二进制 = surrogate str**：还原用 `encode("utf-8","surrogateescape")`。
-3. **同名多套模型**：`_pair_sets` 按内容配对，`_texture_plan` 按 Material 链匹配贴图。
+3. **同名多套模型**：`_pair_sets` 按内容配对；贴图配对 = 两遍扫描 Material 链，多页 atlas 逐页精确配对。
 4. **增量不回删**：输入里删掉的 bundle，历史输出与状态保留（约定）。
-5. 待办：names 表填充、碧蓝/BD2 样本收集与适配器、Live2D 组装、bg 的 HD 4096 贴图是否要从独立 HD 包补。
+5. 待办：names 表填充（azurlane/idleangels/BD2）、
+   BD2 真实 Spine 样本、bg HD 贴图是否独立 HD 包补。
 
 ## 样本清单
 
 ```
 samples/
-  idleangels/spine_dtslxf_cshs.ab   双层嵌套 Spine 样本（唯一样本，端到端验证用）
-  azurlane/    （空，待样本）
+  idleangels/spine_dtslxf_cshs.ab   双层嵌套 Spine 样本（端到端验证用）
+  azurlane/spinepainting/           3 个无扩展名 Spine 3.8 样本（已验证）：
+    jishang_3_asmr_res   多页 atlas（3 页）   kewei_5_res   双模型（kewei_5+kewei_5T）
+    telafaerjia_res      多页 atlas（5 页）
+azurlane/live2d/  aijier_4 / dafeng_7 / guanghui_7（烘焙 Cubism prefab，已验证：
+                       moc3 内嵌 CubismMoc / physics3 TextAsset / texture_00|01）
+azurlane/painting/ haitian_3_rw_tex（Sprite×2 同名 _2） / kalvbudisi_2_tex /
+                   maliluosi_3_doa_tex（大图 + Sprite 切片，已验证）
   browndust2/  com.unity.addressables/（file.json / catalog_alpha.json / catalog_alpha.hash）
                Shared/006b27eb.../a731.../__data + __info（myroom 贴图 bundle，已验证）
   browndust2   待补：真实 Spine（atlas/skel）bundle + illust 立绘 bundle

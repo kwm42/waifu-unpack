@@ -111,9 +111,15 @@ atlas_text / skel_bytes / textures{引用名: png} / missing_textures
    按扫描顺序或"取最大"都会把骨架和贴图集**交叉配错**，预览器直接打不开。
 4. **角色判定**：区域数最多的整套 = `character`，其余 = `background`。
 5. **贴图**（`_texture_plan`）：一张 bundle 里可能有**多张**同名 Texture2D，不能按名去重。
-   - 精确配对走 Material 链：`MonoBehaviour(名 *_Atlas)` → `atlasFile` → 该 atlas 所属贴图，
-     经 `SpineAtlasAsset.materials[] → Material.m_SavedProperties.m_TexEnvs["_MainTex"].m_Texture.path_id`。
+   - 精确配对走 Material 链：`MonoBehaviour(名 *_Atlas)` → `atlasFile` → 
+     `SpineAtlasAsset.materials[]` → `Material.m_SavedProperties.m_TexEnvs["_MainTex"].m_Texture.path_id`。
+   - **多页 atlas**：一个 `.atlas` 可能引用多张 png（碧蓝航线常见），
+     `materials[]` **顺序与 atlas 页面一一对应**，故 `atlas_to_textures` 存
+     atlas_pid → [tex_pid,...] 列表，`_match_textures` 逐页精确配对。
+   - ⚠️ `_texture_plan` 必须**两遍扫描**（先收 Texture2D/Material 链，再解析 Atlas），
+     单遍时 `_Atlas` 可能先于其 Material 被遍历，会漏配（踩坑记录 9/10）。
    - 兜底：大小写不敏感按 `atlas 引用名`(如 `luxifaIR.png`) 匹配，同名多张取最大的。
+   - 跳过多余的：名字兜底会跳过已被精确配对用过的贴图字节（`used_pngs`）。
 
 ### 已知格式细节（Spine 3.8/4.x）
 

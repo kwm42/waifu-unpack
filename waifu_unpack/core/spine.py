@@ -108,7 +108,7 @@ def iter_spine_exports(env: "UnityPy.Environment") -> list[SpineExport]:
     if not atlases and not skeletons:
         return []
 
-    png_by_pid, png_by_name, atlas_to_tex = _texture_plan(objects)
+    png_by_pid, png_by_name, atlas_to_textures = _texture_plan(objects)
     used_pngs: set[bytes] = set()
 
     exports: list[SpineExport] = []
@@ -125,7 +125,7 @@ def iter_spine_exports(env: "UnityPy.Environment") -> list[SpineExport]:
             else:
                 role, var = "background", idx - 1
             textures, missing = _match_textures(
-                atlas_text, atlas_pid, png_by_pid, png_by_name, atlas_to_tex,
+                atlas_text, atlas_pid, png_by_pid, png_by_name, atlas_to_textures,
                 used_pngs,
             )
             exp = SpineExport(
@@ -172,25 +172,27 @@ def _match_textures(
     atlas_pid: int,
     png_by_pid: dict[int, bytes],
     png_by_name: dict[str, list[bytes]],
-    atlas_to_tex: dict[int, int],
+    atlas_to_textures: dict[int, list[int]],
     used_pngs: set[bytes],
 ) -> tuple[dict[str, bytes], list[str]]:
-    """按 atlas 引用名取贴图：优先用 Material 链精确配对，失败则按名兜底。
+    """按 atlas 页面引用名取贴图：多页 atlas 逐页精确配对，失败按名兜底。
 
+    碧蓝航线的 atlas 可能是多页（多个 `xxxx.png`，对应多个 Material）；SpineAtlasAsset
+    的 `materials[]` 顺序与 atlas 页面顺序一一对应，因此这里按位置对齐逐页精确配对。
     used_pngs 记录"已被前几套精确配对使用的贴图字节"，
     名字兜底时跳过它们，避免同 bundle 多套同名贴图互抢（角色/背景各拿各的）。
     返回 (贴图, 缺失列表)。
     """
+    refs = _atlas_texture_refs(atlas_text)
+    mat_pids = atlas_to_textures.get(atlas_pid) or []
     textures: dict[str, bytes] = {}
     missing: list[str] = []
-    exact_pid = atlas_to_tex.get(atlas_pid, 0)
-    exact_png = png_by_pid.get(exact_pid)
-    if exact_png is not None:
-        used_pngs.add(exact_png)
-        for ref in _atlas_texture_refs(atlas_text):
-            textures[ref] = exact_png
-        return textures, missing
-    for ref in _atlas_texture_refs(atlas_text):
+    for idx, ref in enumerate(refs):
+        exact = png_by_pid.get(mat_pids[idx]) if idx < len(mat_pids) else None
+        if exact is not None:
+            textures[ref] = exact
+            used_pngs.add(exact)
+            continue
         want = re.sub(r"\.(?:png|jpe?g)$", "", ref, flags=re.IGNORECASE).lower()
         candidates = png_by_name.get(want) or []
         png = next((b for b in candidates if b not in used_pngs), None)
@@ -270,19 +272,23 @@ def _atlas_texture_refs(atlas_text: str) -> list[str]:
     return refs
 
 
-def _texture_plan(objects) -> tuple[dict[int, bytes], dict[str, list[bytes]], dict[int, int]]:
+def _texture_plan(objects) -> tuple[dict[int, bytes], dict[str, list[bytes]], dict[int, list[int]]]:
     """扫描贴图与 SpineAtlasAsset/Material 的引用关系。
 
-    返回 (png_by_pid, png_by_name, atlas_to_tex)：
+    返回 (png_by_pid, png_by_name, atlas_to_textures)：
     - png_by_pid: Texture2D object path_id -> PNG 字节
     - png_by_name: 小写贴图名 -> [PNG 字节, ...]（同名多张时全保留）
-    - atlas_to_tex: TextAsset(atlas) path_id -> Texture2D path_id
+    - atlas_to_textures: TextAsset(atlas) path_id -> [Texture2D path_id, ...]
+      按 SpineAtlasAsset.materials[] 顺序对应 atlas 各页面（多页 atlas 逐页匹配）。
     """
     png_by_pid: dict[int, bytes] = {}
     png_by_name: dict[str, list[bytes]] = {}
     material_main_tex: dict[int, int] = {}
-    atlas_to_tex: dict[int, int] = {}
+    atlas_mbs: list[tuple[int, list]] = []
 
+    # 第一遍：收集贴图 PNG、Material->_MainTex 链，缓存 Atlas MonoBehaviour。
+    # 不能单遍处理 Atlas：它的 materials[] 指向的 Material 未必已在此前遍历到，
+    # 单遍会把"恰好先遍历到的 Material"当成唯一结果（碧蓝多页贴图曾只配到 1 张）。
     for obj in objects:
         r = obj.read()
         t = obj.type
@@ -306,13 +312,20 @@ def _texture_plan(objects) -> tuple[dict[int, bytes], dict[str, list[bytes]], di
             m_name = str(getattr(r, "m_Name", ""))
             if m_name.endswith("_Atlas"):
                 atlas_pid = _pptr_id(getattr(r, "atlasFile", None))
-                if atlas_pid is None:
-                    continue
-                for mat_pptr in getattr(r, "materials", None) or []:
-                    if _pptr_id(mat_pptr) in material_main_tex:
-                        atlas_to_tex[atlas_pid] = material_main_tex[_pptr_id(mat_pptr)]
-                        break
-    return png_by_pid, png_by_name, atlas_to_tex
+                if atlas_pid is not None:
+                    atlas_mbs.append((atlas_pid, getattr(r, "materials", None) or []))
+
+    # 第二遍：把 Atlas 的 materials[] 按顺序解析成对应各页面的贴图 path_id 列表。
+    atlas_to_textures: dict[int, list[int]] = {}
+    for atlas_pid, mats in atlas_mbs:
+        texs: list[int] = []
+        for mat_pptr in mats:
+            mp = _pptr_id(mat_pptr)
+            if mp in material_main_tex:
+                texs.append(material_main_tex[mp])
+        if texs:
+            atlas_to_textures[atlas_pid] = texs
+    return png_by_pid, png_by_name, atlas_to_textures
 
 
 def _pptr_id(pptr) -> Optional[int]:

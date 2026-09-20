@@ -14,7 +14,7 @@
 首批三款游戏，其余按同一 `GameAdapter` 插拔式追加：
 
 - **IdleAngels**（爱神故事/天使恋曲）——**已打通端到端**（Spine）
-- **碧蓝航线 AzurLane** —— 待实现（Spine 3.8 + Live2D Cubism3 + 立绘切片）
+- **碧蓝航线 AzurLane** —— spinepainting（Spine 3.8）、live2d（烘焙 Cubism，含原生 moc3）、painting（立绘切片）均已打通
 - **棕色尘埃2 BrownDust2** —— 待实现（Spine 4.1，版本头被抹）
 
 ## 环境
@@ -66,6 +66,11 @@ python -m waifu_unpack idleangels --input <资源目录> --out <输出目录> --
 python -m waifu_unpack idleangels --input samples\idleangels --out samples\out
 ```
 
+> 碧蓝航线当前支持 spinepainting（Spine 3.8）、live2d（烘焙 Cubism，含原生 moc3）、painting（立绘切片）：
+> `python -m waifu_unpack azurlane --input samples\azurlane\spinepainting --out samples\out --types spine`
+> `python -m waifu_unpack azurlane --input samples\azurlane\live2d --out samples\out --types live2d`
+> `python -m waifu_unpack azurlane --input samples\azurlane\painting --out samples\out --types painting`
+
 产出（详见 [conventions.md](./conventions.md#输出结构)）：
 
 ```
@@ -89,9 +94,10 @@ samples\out\idleangels\
 - [x] Spine 组装：同名多套模型按内容配对 + Material 链精确定位贴图
 - [x] IdleAngels 端到端
 - [~] names/idleangels.json 中文映射填充（`files` 表 247/445 已自动生成，留空需人工补）
-- [ ] 碧蓝航线（spine + live2d + painting）
+- [~] 碧蓝航线 **spinepainting / live2d / painting 均已打通**（spinepainting：多页 atlas + 版本被抹 fallback；live2d：烘焙 Cubism prefab，moc3 内嵌 CubismMoc；painting：Sprite textureRect 切片）
 - [~] 棕色尘埃2（forced_unity_version fallback + catalog 还原、myroom 贴图样本打通；待真实 Spine 样本）
-- [ ] Live2D 组装落地
+- [x] Live2D 组装（core/live2d.py + azurlane 适配器，烘焙 Cubism prefab）
+- [x] painting 切片（core/painting.py + azurlane 适配器，Sprite textureRect 裁切）
 
 ## 目录结构
 
@@ -103,7 +109,7 @@ waifu-unpack/
       bundlereader.py      bundle 打开/头部修复
       incremental.py       增量状态
       spine.py             Spine 组装
-      live2d.py            Live2D 骨架（未实现）
+      live2d.py            Live2D 组装（烘焙 Cubism，moc3 内嵌 CubismMoc）
       painting.py          立绘切片
     games/                每款游戏一个适配器 + 注册表
     names/                每款游戏一张中文名映射表（json）

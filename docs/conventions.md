@@ -46,12 +46,36 @@ out_root/idleangels/<bundle文件名>/angel/   ← 人物模型（区域最多�
 - 贴图文件名 = **atlas 第一行引用的名字**（大小写原样），文件与 atlas 同目录，这套裁切才正确。
 - 状态文件 `<out>/<game>/.waifu-unpack-state.json` 不算导出物。
 
+## 输出结构（碧蓝航线，2026-09）
+
+```
+out_root/azurlane/<bundle文件名>/angel/   ← 人物/单套模型
+                                     bg/  ← 背景模型（同名多套时）
+   每套三件套：<基名>.atlas  <基名>.skel  <atlas各页引用的贴图名>.png
+
+out_root/azurlane/<bundle文件名>/live2d/ <- Live2D 模型一套
+   <基名>.moc3  <基名>.model3.json  <基名>.physics3.json（有则）  <贴图名>.png
+
+out_root/azurlane/<bundle文件名>/illust/ <- 立绘切片 PNG（painting）
+   <key>.png   （同 bundle 内有同名多张时 <key>_2.png、<key>_3.png…）
+```
+
+- **目录名 = bundle 文件名**（样本无扩展名，如 `spinepainting/jishang_3_asmr_res` → `jishang_3_asmr_res/`）。
+- spinepainting 大多一套模型直接进 `angel/`；同 bundle 若含同名多套（人物+背景）才走 `bg/`。
+- **多页 atlas**：一个 `.atlas` 引用多张 png，逐页导出（`telafaerjia.png`、`telafaerjia2.png`…），
+  贴图文件名 = atlas 页面引用名原样。
+- live2d 为**烘焙式 Cubism prefab**：`moc3` 从 `CubismMoc` 组件原始字节提取；`model3.json`
+  原包没有，运行时由 `core/live2d.py` 组装最小结构；贴图名 = m_Name（`texture_00`…）。
+- painting 为**大图 + Sprite 切片**：按 `Sprite.m_RD.textureRect` 从 Texture2D 裁出内容区
+  （裁掉边缘透明 padding，保留 alpha），不做 Mesh 重组；输出到 `illust/`。
+- `names/azurlane.json`（characters/skins，同 IdleAngels 语义）待填充中文，无映射用英文 id。
+
 ## 输出结构（棕色尘埃2，2026-09）
 
 ```
 out_root/browndust2/<角色>/illust/   ← 立绘整图（Texture2D → PNG，非切片）
-                           angel/   ← 人物 Spine（待真实样本验证）
-                           bg/      ← 背景 Spine
+                           angel/      ← 人物 Spine（待真实样本验证）
+                           bg/         ← 背景 Spine
 ```
 
 - **目录名 ≠ bundle 文件名**：BD2 本地缓存是 hash 目录（`Shared/<bundleName>/<hash>/__data`），
@@ -139,6 +163,27 @@ out_root/browndust2/<角色>/illust/   ← 立绘整图（Texture2D → PNG，�
    修：改走 UnityPy 官方机制 `UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.22f1"`
    （`BundleReader._fallback_version()` 上下文管理器，打开期间设置并还原）。
    教训：改投 UnityPy 官方配置项，别手工改格式字节。
+9. **单遍扫描 Atlas/Material 链只配到第一张贴图**：`_texture_plan` 遇 `_Atlas` MonoBehaviour
+   时 `break` 只取第一个见过的 Material → 多页 atlas 所有页全配成同一张
+   （碧蓝 `telafaerjia` 5 页内容各异却全同页 1）。
+   修：两遍扫描——先收 Texture2D 与原 Material 链，再解析 Atlas 的 `materials[]`。
+10. **遍历顺序依赖隐蔽坑**：单遍时 Atlas MonoBehaviour 可能**先于**其 Material 出现，
+    只收集到"恰好已见过的 Material"（telafaerjia 只剩第 4 个），与上一坑互为变体。
+    修：两遍扫描一并解决。多页 atlas 的 `atlas_to_textures` = atlas_pid → [tex_pid,...]，
+    页面顺序 = `materials[]` 顺序。
+11. **Live2D 不是 TextAsset 拼接**（碧蓝 live2d 样本）：全 bundle 是烘焙式 Cubism prefab
+    （ArtMesh GameObject + CubismRenderer/Drawable），**没有原生 model3.json**；
+    moc3 是内嵌在 `CubismMoc` MonoBehaviour 序列化字节里的二进制
+    （从 `MOC3` 魔数起一直延伸到对象末尾，头部 `MOC3`+u32 版本+信息块偏移表，v4/v5 均此）。
+    修：`core/live2d.py` 从 CubismMoc 原始数据找 `MOC3` 提取，physics3 取 TextAsset，
+    贴图取 Texture2D，`model3.json` 自行组装最小结构（Groups/HitAreas 缺数据置空，官方查看器可加载）。
+    教训：烘焙式 Cubism 模型的本体数据在 MonoBehaviour 的**原始序列化字节**里，别找 TextAsset。
+12. **painting 切片别把 padding 一起导出**（碧蓝 painting 样本）：Texture2D 是带边缘填充的大图，
+    直接整图输出会带一圈透明/杂边；且 Sprite 的 `textureRect` 是**左下原点**（Unity UV 系），
+    转 PIL 左上原点要 y 翻转：`top = 纹高 - (y+h)`, `bottom = 纹高 - y`。
+    修：`core/painting.py` 按 `Sprite.m_RD.textureRect` 裁切并 clamp 越界；同 bundle 同名 Sprite
+    （如 haitian 的两张 1790/1792 贴图）自动 `_2/_3` 编号。贪心教训：样本里"一个 bundle 一张图"
+    不一定真，先数 Sprite 数量再写去重。
 
 ## 环境备忘
 
