@@ -30,6 +30,7 @@ GAMES: list[tuple[str, str, str]] = [
     ("azurlane", "碧蓝航线 (Azur Lane)", "spine,live2d,painting"),
     ("idleangels", "Idle Angels", "spine,painting"),
     ("browndust2", "棕色尘埃2 (Brown Dust 2)", "spine,painting"),
+    ("jiaocuozhanxian", "交错战线 (CrossCore)", "spine,painting"),
 ]
 
 

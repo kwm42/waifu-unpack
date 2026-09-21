@@ -16,6 +16,7 @@ _REGISTRY: dict[str, tuple[str, str]] = {
     "idleangels": ("waifu_unpack.games.idleangels", "IdleAngels"),
     "azurlane": ("waifu_unpack.games.azurlane", "AzurLane"),
     "browndust2": ("waifu_unpack.games.browndust2", "BrownDust2"),
+    "jiaocuozhanxian": ("waifu_unpack.games.jiaocuozhanxian", "JiaoCuoZhanXian"),
 }
 
 

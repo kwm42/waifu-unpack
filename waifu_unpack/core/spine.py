@@ -26,8 +26,11 @@ log = logging.getLogger(__name__)
 TEXT_EXTENSIONS = (".txt", ".asset", ".bytes", ".json", ".skel", ".atlas")
 SKEL_EXTENSIONS = (".skel", ".json")
 ATLAS_EXTENSIONS = (".atlas",)
-_TEXTURE_REF_RE = re.compile(r"^\s*(\S+?\.(?:png|jpe?g))$", re.IGNORECASE)
 _STRIP_TAIL_RE = re.compile(r"\.(?:asset|txt|bytes)$", re.IGNORECASE)
+_TEXTURE_REF_RE = re.compile(r"^\s*(\S+?\.(?:png|jpe?g))$", re.IGNORECASE)
+# 无后缀骨架的判定：内容以 Spine JSON 头（"{"skeleton":")开头。
+# 部分游戏（如交错战线）的骨架 TextAsset 不带 .skel/.json 后缀，靠内容签名识别。
+_SPINE_JSON_HEAD = b'{"skeleton"'
 
 
 @dataclass
@@ -62,6 +65,12 @@ def _clean_asset_name(name: str) -> str:
 def _asset_stem(name: str) -> str:
     """去掉后缀（含 .atlas/.skel/.json），得到分组主键。"""
     return re.sub(r"\.(?:atlas|skel|json)$", "", _clean_asset_name(name), flags=re.IGNORECASE)
+
+
+def _is_spine_json(data: bytes) -> bool:
+    """内容疑似 Spine JSON 骨架（用于无后缀命名识别）。"""
+    head = data[:64].lstrip()
+    return head.startswith(_SPINE_JSON_HEAD)
 
 
 def _text_asset_bytes(script) -> bytes:
@@ -109,6 +118,9 @@ def iter_spine_exports(env: "UnityPy.Environment") -> list[SpineExport]:
                 (pid, data.decode("utf-8", errors="replace"), container)
             )
         elif low.endswith(SKEL_EXTENSIONS):
+            skeletons.setdefault(base, []).append(data)
+        # 无后缀命名：若内容像 Spine JSON 骨架，也当骨架处理（交错战线等）
+        elif "." not in low and _is_spine_json(data):
             skeletons.setdefault(base, []).append(data)
 
     if not atlases and not skeletons:
