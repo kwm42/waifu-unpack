@@ -15,7 +15,7 @@
 
 - **IdleAngels**（爱神故事/天使恋曲）——**已打通端到端**（Spine）
 - **碧蓝航线 AzurLane** —— spinepainting（Spine 3.8）、live2d（烘焙 Cubism，含原生 moc3）、painting（立绘切片）均已打通
-- **棕色尘埃2 BrownDust2** —— 待实现（Spine 4.1，版本头被抹）
+- **棕色尘埃2 BrownDust2** —— **已打通端到端**（Spine 4.1 + chibi 帧图；版本头被抹，格式研究见 game-research.md）
 
 ## 环境
 
@@ -74,14 +74,21 @@ python unpack_menu.py
 
 ### 当前可验证示例
 
+样本的来源、目录结构、更新方式见 [samples.md](./samples.md)（本地真实资源，不入库）。
+
 ```powershell
 python -m waifu_unpack idleangels --input samples\idleangels --out samples\out
 ```
 
 > 碧蓝航线当前支持 spinepainting（Spine 3.8）、live2d（烘焙 Cubism，含原生 moc3）、painting（立绘切片）：
-> `python -m waifu_unpack azurlane --input samples\azurlane\spinepainting --out samples\out --types spine`
-> `python -m waifu_unpack azurlane --input samples\azurlane\live2d --out samples\out --types live2d`
-> `python -m waifu_unpack azurlane --input samples\azurlane\painting --out samples\out --types painting`
+> `python -m waifu_unpack azurlane --input samples\azurlane\spinepainting --out output --types spine`
+> `python -m waifu_unpack azurlane --input samples\azurlane\live2d --out output --types live2d`
+> `python -m waifu_unpack azurlane --input samples\azurlane\painting --out output --types painting`
+
+> 棕色尘埃2 支持 spine / painting（chibi 帧图 + 立绘 + Spine 三件套）。
+> 完整游戏资源按关键词同步进样本再解包（`--source` + `--filter`，见 games/browndust2.md）：
+> `python -m waifu_unpack browndust2 --input samples\browndust2 --out output --types spine,painting`
+> `python -m waifu_unpack browndust2 --source "F:\live2d\棕色尘埃2" --filter coolspine --input samples\browndust2 --out output`
 
 产出（详见 [conventions.md](./conventions.md#输出结构)）：
 
@@ -106,8 +113,8 @@ samples\out\idleangels\
 - [x] Spine 组装：同名多套模型按内容配对 + Material 链精确定位贴图
 - [x] IdleAngels 端到端
 - [~] names/idleangels.json 中文映射填充（`files` 表 247/445 已自动生成，留空需人工补）
-- [~] 碧蓝航线 **spinepainting / live2d / painting 均已打通**（spinepainting：多页 atlas + 版本被抹 fallback；live2d：烘焙 Cubism prefab，moc3 内嵌 CubismMoc；painting：Sprite textureRect 切片）
-- [~] 棕色尘埃2（forced_unity_version fallback + catalog 还原、myroom 贴图样本打通；待真实 Spine 样本）
+- [x] 碧蓝航线 **spinepainting / live2d / painting 均已打通**（spinepainting：多页 atlas + 版本被抹 fallback；live2d：烘焙 Cubism prefab，moc3 内嵌 CubismMoc；painting：Sprite textureRect 切片）
+- [x] 棕色尘埃2（参考程序逻辑移植：catalog 解码/分类正则/命名映射；版本被抹→FALLBACK_UNITY_VERSION；`--source --filter` 按关键词同步样本；spine/chibi 真实样本均已通）
 - [x] Live2D 组装（core/live2d.py + azurlane 适配器，烘焙 Cubism prefab）
 - [x] painting 切片（core/painting.py + azurlane 适配器，Sprite textureRect 裁切）
 

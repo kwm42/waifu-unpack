@@ -7,7 +7,7 @@ cli.py                参数解析、扫目录、增量判断、写文件、汇�
   └ games/<key>.py    GameAdapter：判别 bundle、打开、组装导出物、命名
        └ core/        通用能力
             bundlereader   读取 bundle（嵌套/脏字节/版本修复）
-            catalog        目录清单（Addressables file.json，BD2 用）
+            catalog        目录清单（BD2：file.json / catalog_alpha 解码 + 关键词过滤）
             incremental    增量状态
             spine / live2d / painting  内容组装
 ```
@@ -73,22 +73,28 @@ artifacts ──▶ 写盘 + state.mark_done(rel, md5, 文件名列表) ──�
   管理器在打开期间临时设置并还原，同时用 `warnings` 屏蔽该 fallback 的烦人告警。
 - 全部候选解析失败 → 抛 `BundleOpenError`，附文件头 hex 便于回传样本。
 
-## 四、core/catalog.py（目录清单，BD2）
-
-- 解析 Addressables 的 `file.json`：`bundleName`（磁盘目录名）↔ `readableName`（逻辑路径）
-  ↔ `hash`（子目录名）↔ `size`。`Catalog.discover(base_dir)` 递归找
-  `com.unity.addressables/file.json` 并加载。
-- 用途：BD2 本地缓存是 `Shared/<bundleName>/<hash>/__data` 纯 hash 命名，
-  靠它把 hash 还原成可读的角色/路径，也校验 size。
-- 数据形态见 game-research.md「棕色尘埃2」节。
-
-## 五、core/incremental.py
+## 四、core/incremental.py
 
 - 状态文件：`<out>/<game>/.waifu-unpack-state.json`，记录每个 bundle 相对路径 → `{md5, artifacts[]}`。
 - 规则：md5 与记录一致 → 跳过；不一致/未记录 → 处理；输入中被删除 → **不清理**历史输出与记录（只加不改不删）。
 - 写入用临时文件 + `replace`，避免半截状态。损坏的旧状态仅告警并按空基线重来。
 
-## 六、core/spine.py（重点）
+## 四·五、core/catalog.py 与 `--source`（BD2 资源同步）
+
+BD2 的 bundle 盘上只有 hash 目录（`Shared/<bundleName>/<hash>/__data`），没有语义名；
+且完整游戏资源（来源地目录）远大于本地样本。两个问题一起解决：
+
+- `Catalog`：把 catalog 解析成 `BundleEntry(bundle_name, readable_name, hash, ...)` 的集合，
+  支持按 hash 检索与按 readableName 关键词过滤。
+  - `from_file_json`：读 `com.unity.addressables/file.json` 的 `bundles[]`（结构化清单）；
+  - `from_catalog_alpha`：读 `catalog_alpha.json` 的 `m_KeyDataString`（base64 → 抽可打印串 →
+    过滤 `^.+_<32hex>.bundle$` → 尾 32hex 即 hash），移植自参考程序 decoder.py。
+- CLI `--source <目录> --filter <关键词>`：在扫描前调用适配器
+  `sync_from_source(source, keywords, input)`——按关键词过滤 readableName，把匹配 bundle 的
+  `Shared/<b>/<h>/__data` 复制到 `--input`（已存在且大小一致则跳过），再走正常解包流程。
+  筛选可精确到角色/场景（如 `coolspine`、`cutscene061306`），避免全量 15GB 都拷下来。
+
+## 五、core/spine.py（重点）
 
 ### 产出模型 `SpineExport`
 
@@ -128,7 +134,7 @@ atlas_text / skel_bytes / textures{引用名: png} / missing_textures
   均匀缩放不影响 uv 正确性，属游戏数据本身。
 - 二进制 skel 头 `\x1c` + 7 字节 hash + 字符串表，字符串区包含 attachment 名（用于配对估分）。
 
-## 七、UnityPy 1.x 关键 API
+## 六、UnityPy 1.x 关键 API
 
 踩过的坑，务必记住：
 
@@ -145,7 +151,7 @@ atlas_text / skel_bytes / textures{引用名: png} / missing_textures
   （`to_dict()`/`dict(r)` 不可用）。不确定有哪些字段用 `dir(r)` 过滤下划线。
 - `Texture2D.image` 返回 PIL Image（RGBA/RGB），后台格式（ASTC 等 48 号之类）也能解。
 
-## 八、新增一款游戏清单
+## 七、新增一款游戏清单
 
 1. `games/<key>.py`：继承 `GameAdapter`，实现 `is_bundle_file` / `extract`，
    （必要时覆写 `open_bundle`、设 `forced_unity_version`）。
@@ -153,7 +159,7 @@ atlas_text / skel_bytes / textures{引用名: png} / missing_textures
 3. `names/<key>.json`：建空表。
 4. 放样本到 `samples/<key>/`，跑 `python -m waifu_unpack <key> --input samples\<key> --out samples\out --verbose` 验证。
 
-## 九、开发环境提示（Windows / PowerShell）
+## 八、开发环境提示（Windows / PowerShell）
 
 - **控制台中文乱码 = 代码页问题，不是数据问题**：文件是 UTF-8，PowerShell 用 GBK 显示。
   无碍时忽略；需要看得舒服就 `$env:PYTHONIOENCODING="utf-8"` 再跑。

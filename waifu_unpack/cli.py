@@ -27,6 +27,16 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("game", nargs="?", help="游戏名，见 --list")
     p.add_argument("--list", action="store_true", help="列出已支持的游戏")
     p.add_argument("--input", type=Path, help="资源输入目录（安卓拷贝下来的那层）")
+    p.add_argument(
+        "--source",
+        type=Path,
+        help="来源地资源目录（游戏完整资源，如 F:\\live2d\\棕色尘埃2）；配合 --filter 从该目录复制需要的 bundle 到 --input",
+    )
+    p.add_argument(
+        "--filter",
+        default="",
+        help="与 --source 连用：只复制 readableName 含这些关键词（逗号分隔）的 bundle，如 spine,cutscene",
+    )
     p.add_argument("--out", type=Path, default=Path("output"), help="输出根目录 (默认 项目根/output)")
     p.add_argument(
         "--types",
@@ -118,6 +128,21 @@ def main(argv: list[str] | None = None) -> int:
         log.error("用 --list 查看支持的游戏")
         return 2
 
+    if args.source is not None:
+        source = args.source.expanduser().resolve()
+        if not source.is_dir():
+            log.error("来源目录不存在: %s", source)
+            return 2
+        keywords = [k.strip() for k in args.filter.split(",") if k.strip()]
+        if not keywords:
+            log.error("使用 --source 时需要 --filter 关键词（逗号分隔）")
+            return 2
+        sync = getattr(adapter, "sync_from_source", None)
+        if sync is None:
+            log.error("游戏 %s 不支持 --source 资源同步", adapter.key)
+            return 2
+        sync(source, keywords, args.input)
+
     types = frozenset(t.strip().lower() for t in args.types.split(",") if t.strip())
     unknown = types - set(adapter.supported_types)
     if unknown:
@@ -163,7 +188,13 @@ def main(argv: list[str] | None = None) -> int:
                 failed += 1
                 continue
             try:
-                artifacts = adapter.extract(env, types, bundle_stem=Path(rel).stem)
+                artifacts = adapter.extract(
+                    env,
+                    types,
+                    bundle_stem=Path(rel).stem,
+                    input_dir=args.input,
+                    rel=rel,
+                )
             except NotImplementedError as exc:
                 log.warning("跳过 %s: %s", rel, exc)
                 continue

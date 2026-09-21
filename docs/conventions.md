@@ -70,17 +70,29 @@ out_root/azurlane/painting/<bundle文件名>/illust/ <- 立绘切片 PNG（paint
   （裁掉边缘透明 padding，保留 alpha），不做 Mesh 重组；输出到 `illust/`。
 - `names/azurlane.json`（characters/skins，同 IdleAngels 语义）待填充中文，无映射用英文 id。
 
-## 输出结构（棕色尘埃2，2026-09）
+## 输出结构（棕色尘埃2，2026-09 参考程序移植完成）
 
 ```
-out_root/browndust2/<角色>/illust/   ← 立绘整图（Texture2D → PNG，非切片）
-                           angel/      ← 人物 Spine（待真实样本验证）
-                           bg/         ← 背景 Spine
+out_root/browndust2/
+  spine/character/<角色>/<皮肤>/<基名>.atlas|.skel|<贴图>.png   ← 角色战斗立绘
+  spine/interaction|light_novel_talk|npc/<角色>/[<皮肤>/]<基名>... ← 互动/轻小说/npc
+  spine/special_animation|miscellaneous/                        ← 特殊动画/杂项
+  ui/costume_face|costume_icon|costume_skill_face|skill_icons|
+     speech_bubble_faces|wallpapers|skill_cutscene_background/<基名>.png
+  chibis/<角色>/<皮肤>/<帧>.png                                  ← 小人帧动画贴图
 ```
 
-- **目录名 ≠ bundle 文件名**：BD2 本地缓存是 hash 目录（`Shared/<bundleName>/<hash>/__data`），
-  用 `file.json` 的 `readableName` 推导角色标识（`charXXXXXX` → names 表中文，否则取路径尾段）。
-- 同一 bundle 若含多套仍走 `angel/`、`bg/` 子目录 + 同名变体 `_2/_3`（与 IdleAngels 同规则）。
+- 角色/皮肤来自 `names/browndust2.json`（characters/skins 两表），值沿用官方英文
+  （BD2 无中文译名）；查不到回退英文 id（皮肤=哨兵 `默认` 省略层级）。
+- 资产归类与命名规则移植自**参考程序** `postExtraction.py`（分类正则 / `getMappingId` /
+  `mapCharacterSpines` 等的 naming；含硬编码修补：`char101601→char060401`、
+  `char061092_A` 去尾、`npc300501`(Loen) 提升为角色 `char003201`、skill_cutscene 黑名单、
+  costume_icon 尺寸/截断、speech_bubble_faces 黑名单、`fixAtlasFiles` 贴图引用改写）。
+- **spine**：一个 bundle 可含多个角色（illustspine 全家桶），按资产名逐模型归类，
+  复用 `core/spine.py` 组装三件套；**painting**：离散贴图按名归入 ui/* 与 chibis/。
+- 来源地目录（完整游戏资源）虚拟：CLI `--source <目录> --filter <关键词>` 会按
+  readableName 关键词把匹配 bundle 的 `Shared/<b>/<h>/__data` 复制到 `--input`，
+  再正常解包（`core/catalog.py` + `sync_from_source`）。
 
 ## 命名规则 v3（IdleAngels，用户拍板 2026-09）
 
@@ -184,6 +196,13 @@ out_root/browndust2/<角色>/illust/   ← 立绘整图（Texture2D → PNG，�
     修：`core/painting.py` 按 `Sprite.m_RD.textureRect` 裁切并 clamp 越界；同 bundle 同名 Sprite
     （如 haitian 的两张 1790/1792 贴图）自动 `_2/_3` 编号。贪心教训：样本里"一个 bundle 一张图"
     不一定真，先数 Sprite 数量再写去重。
+13. **BD2 资产名无扩展名，正则要对"文件名"匹配**：UnityPy 的 `Texture2D.m_Name`（如
+    `Char060302_Idle_BR_01`）**不带 `.png`**，而参考程序正则是对"解包后文件名"（含后缀）写的；
+    `re.match(pattern, m_Name)` 直接不命中。修：匹配前补上后缀 `f"{name}.png"`。
+14. **BD2 spine 资产名带后缀，映射 key 不能带**：TextAsset `m_Name` 带 `.atlas/.skel`
+    （`char003892.atlas`），直接把整名丢进 `getMappingId` 会让 key 变成 `char003892.atlas`,
+    names 表查不中 → 目录退化成 `spine/character/char003892.atlas/`。修：正则匹配用全名，
+    映射 key 用去后缀的 stem（参考程序对 `filePath.stem` 做 `getMappingId`）。
 
 ## 环境备忘
 

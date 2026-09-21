@@ -79,8 +79,15 @@ class GameAdapter(ABC):
         env: UnityPy.Environment,
         types: frozenset[str],
         bundle_stem: str = "",
+        *,
+        input_dir: Optional[Path] = None,
+        rel: str = "",
     ) -> list[ExportArtifact]:
-        """把一个已打开的 bundle 组装成导出物列表。"""
+        """把一个已打开的 bundle 组装成导出物列表。
+
+        input_dir/rel 是可选上下文：当某类资产需要跨 bundle 分组
+        （如 Atlas 与 Sprite 分属不同包时）可用它在同级定位合作包。
+        """
         raise NotImplementedError
 
     # ------------------------------------------------------------------

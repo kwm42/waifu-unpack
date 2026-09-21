@@ -46,6 +46,7 @@ class SpineExport:
     variant: int = 0
     textures: dict[str, bytes] = field(default_factory=dict)
     missing_textures: list[str] = field(default_factory=list)
+    container: str = ""
 
     @property
     def stem(self) -> str:
@@ -82,25 +83,30 @@ def iter_spine_exports(env: "UnityPy.Environment") -> list[SpineExport]:
     """
     objects = list(env.objects)
 
-    text_assets: list[tuple[str, int, bytes]] = []
+    text_assets: list[tuple[str, int, bytes, str]] = []
     for obj in objects:
         try:
             if obj.type.name == "TextAsset":
                 ta = obj.read()
                 text_assets.append(
-                    (str(ta.m_Name), obj.path_id, _text_asset_bytes(ta.m_Script))
+                    (
+                        str(ta.m_Name),
+                        obj.path_id,
+                        _text_asset_bytes(ta.m_Script),
+                        _obj_container(obj),
+                    )
                 )
         except Exception:  # noqa: BLE001 - 单个对象失败不影响整体
             continue
 
-    atlases: dict[str, list[tuple[int, str]]] = {}
+    atlases: dict[str, list[tuple[int, str, str]]] = {}
     skeletons: dict[str, list[bytes]] = {}
-    for name, pid, data in text_assets:
+    for name, pid, data, container in text_assets:
         base = _asset_stem(name)
         low = _clean_asset_name(name).lower()
         if low.endswith(ATLAS_EXTENSIONS):
             atlases.setdefault(base, []).append(
-                (pid, data.decode("utf-8", errors="replace"))
+                (pid, data.decode("utf-8", errors="replace"), container)
             )
         elif low.endswith(SKEL_EXTENSIONS):
             skeletons.setdefault(base, []).append(data)
@@ -136,6 +142,7 @@ def iter_spine_exports(env: "UnityPy.Environment") -> list[SpineExport]:
                 skel_bytes=skel_data,
                 textures=textures,
                 missing_textures=missing,
+                container=_container_for(atlas_pid, atlas_list),
             )
             for miss in exp.missing_textures:
                 log.warning(
@@ -230,11 +237,11 @@ def _skel_tokens(skel_data: bytes) -> frozenset[str]:
 
 
 def _pair_sets(
-    skel_list: list[bytes], atlas_list: list[tuple[int, str]]
+    skel_list: list[bytes], atlas_list: list[tuple[int, str, str]]
 ) -> list[tuple[bytes, int, str]]:
     """按内容把骨架与 atlas 做贪心最优配对，返回 [(skel, atlas_pid, atlas), ...]。"""
     if len(atlas_list) == 1 and len(skel_list) == 1:
-        apid, atext = atlas_list[0]
+        apid, atext, _ = atlas_list[0]
         return [(skel_list[0], apid, atext)]
 
     used_skel: set[int] = set()
@@ -246,7 +253,7 @@ def _pair_sets(
             if si in used_skel:
                 continue
             sktoks = _skel_tokens(sk)
-            for ai, (_, atext) in enumerate(atlas_list):
+            for ai, (_, atext, _) in enumerate(atlas_list):
                 if ai in used_atlas:
                     continue
                 regs = _atlas_regions(atext)
@@ -256,11 +263,27 @@ def _pair_sets(
         if best is None or best[0] <= 0:
             break
         _, si, ai = best
-        apid, atext = atlas_list[ai]
+        apid, atext, _ = atlas_list[ai]
         pairs.append((skel_list[si], apid, atext))
         used_skel.add(si)
         used_atlas.add(ai)
     return pairs
+
+
+def _obj_container(obj) -> str:
+    """取 UnityPy 对象容器路径（如 Assets/.../xxx），没有则空串。"""
+    try:
+        return str(getattr(obj, "container", "") or "")
+    except Exception:  # noqa: BLE001
+        return ""
+
+
+def _container_for(atlas_pid: int, atlas_list: list[tuple[int, str, str]]) -> str:
+    """按 atlas path_id 从列表里取 container 路径。"""
+    for pid, _atext, container in atlas_list:
+        if pid == atlas_pid:
+            return container
+    return ""
 
 
 def _atlas_texture_refs(atlas_text: str) -> list[str]:

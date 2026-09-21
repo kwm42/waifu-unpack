@@ -1,6 +1,2046 @@
 {
+  "_说明": "Brown Dust 2 名字映射表，由参考程序 mapping.json 转换（characters/skins 两表）。键 = 资产名（charXXXX/cutscene_charXXXX/npcXXXX/illust_talkN/illust_datingN）的小写规范化；角色名沿用官方英文（BD2 无中文官方译名）。",
   "characters": {
+    "ailee": {
+      "cn": "Ailee"
+    },
+    "alec": {
+      "cn": "Alec"
+    },
+    "anastasia": {
+      "cn": "Anastasia"
+    },
+    "andrew": {
+      "cn": "Andrew"
+    },
+    "angelica": {
+      "cn": "Angelica"
+    },
+    "aquila": {
+      "cn": "Aquila"
+    },
+    "arines": {
+      "cn": "Arines"
+    },
+    "asmode": {
+      "cn": "Asmode"
+    },
+    "beatrice": {
+      "cn": "Beatrice"
+    },
+    "bernie": {
+      "cn": "Bernie"
+    },
+    "blade": {
+      "cn": "Blade"
+    },
+    "carlson": {
+      "cn": "Carlson"
+    },
+    "casino_rudina": {
+      "cn": "Casino_Rudina"
+    },
+    "casual_valze": {
+      "cn": "Casual_Valze"
+    },
+    "celia": {
+      "cn": "Celia"
+    },
+    "child_hansen": {
+      "cn": "Child_Hansen"
+    },
+    "child_justia": {
+      "cn": "Child_Justia"
+    },
+    "child_liberta": {
+      "cn": "Child_Liberta"
+    },
+    "cynthia": {
+      "cn": "Cynthia"
+    },
+    "dalvi": {
+      "cn": "Dalvi"
+    },
+    "darian": {
+      "cn": "Darian"
+    },
+    "determined_researcher": {
+      "cn": "Determined_Researcher"
+    },
+    "diana": {
+      "cn": "Diana"
+    },
+    "eclipse": {
+      "cn": "Eclipse"
+    },
+    "eda": {
+      "cn": "Eda"
+    },
+    "eleaneer": {
+      "cn": "Eleaneer"
+    },
+    "eleanor": {
+      "cn": "Eleanor"
+    },
+    "elise": {
+      "cn": "Elise"
+    },
+    "ellin": {
+      "cn": "Ellin"
+    },
+    "elpis": {
+      "cn": "Elpis"
+    },
+    "emma": {
+      "cn": "Emma"
+    },
+    "eris": {
+      "cn": "Eris"
+    },
+    "fred": {
+      "cn": "Fred"
+    },
+    "garinoth": {
+      "cn": "Garinoth"
+    },
+    "glacia": {
+      "cn": "Glacia"
+    },
+    "goblin_slayer": {
+      "cn": "Goblin_Slayer"
+    },
+    "granadair": {
+      "cn": "Granadair"
+    },
+    "granhildr": {
+      "cn": "Granhildr"
+    },
+    "gray": {
+      "cn": "Gray"
+    },
+    "greta": {
+      "cn": "Greta"
+    },
+    "guild_recepionist_liza": {
+      "cn": "Guild_Recepionist_Liza"
+    },
+    "gynt": {
+      "cn": "Gynt"
+    },
+    "hansen": {
+      "cn": "Hansen"
+    },
+    "helena": {
+      "cn": "Helena"
+    },
+    "high_elf_archer": {
+      "cn": "High_Elf_Archer"
+    },
+    "hikage": {
+      "cn": "Hikage"
+    },
+    "ikaruga": {
+      "cn": "Ikaruga"
+    },
+    "illust_talk001101": {
+      "cn": "Teresse"
+    },
+    "illust_talk001201": {
+      "cn": "Liatris"
+    },
+    "illust_talk10": {
+      "cn": "Sylvia"
+    },
+    "illust_talk2": {
+      "cn": "Justia"
+    },
+    "illust_talk24": {
+      "cn": "Diana"
+    },
+    "illust_talk3": {
+      "cn": "Scheherazade"
+    },
+    "illust_talk4": {
+      "cn": "Gray"
+    },
+    "illust_talk5": {
+      "cn": "Rou"
+    },
+    "illust_talk6": {
+      "cn": "Olstein"
+    },
+    "illust_talk7": {
+      "cn": "Eclipse"
+    },
+    "illust_talk8": {
+      "cn": "Rubia"
+    },
+    "illust_talk9015": {
+      "cn": "Celia"
+    },
+    "illust_talk9016": {
+      "cn": "Marianne_Dumain"
+    },
+    "illust_talk9017": {
+      "cn": "Liberta"
+    },
+    "illust_talk9018": {
+      "cn": "Eda"
+    },
+    "ingrid": {
+      "cn": "Ingrid"
+    },
+    "jayden": {
+      "cn": "Jayden"
+    },
+    "julie": {
+      "cn": "Julie"
+    },
+    "justia": {
+      "cn": "Justia"
+    },
+    "king_of_rotein_gray": {
+      "cn": "King_of_Rotein_Gray"
+    },
+    "kry": {
+      "cn": "Kry"
+    },
+    "kyouka_uzen": {
+      "cn": "Kyouka_Uzen"
+    },
+    "lathel": {
+      "cn": "Lathel"
+    },
+    "layla": {
+      "cn": "Layla"
+    },
+    "lecliss": {
+      "cn": "Lecliss"
+    },
+    "levia": {
+      "cn": "Levia"
+    },
+    "liatris": {
+      "cn": "Liatris"
+    },
+    "liberta": {
+      "cn": "Liberta"
+    },
+    "lisianne": {
+      "cn": "Lisianne"
+    },
+    "loen": {
+      "cn": "Loen"
+    },
+    "lucrezia": {
+      "cn": "Lucrezia"
+    },
+    "luvencia": {
+      "cn": "Luvencia"
+    },
+    "lydia": {
+      "cn": "Lydia"
+    },
+    "mamonir": {
+      "cn": "Mamonir"
+    },
+    "maria": {
+      "cn": "Maria"
+    },
+    "marianne_dumain": {
+      "cn": "Marianne_Dumain"
+    },
+    "michaela": {
+      "cn": "Michaela"
+    },
+    "morpeah": {
+      "cn": "Morpeah"
+    },
+    "nartas": {
+      "cn": "Nartas"
+    },
+    "nebris": {
+      "cn": "Nebris"
+    },
+    "nekyndalia": {
+      "cn": "Nekyndalia"
+    },
+    "night_world_lathel": {
+      "cn": "Night_World_Lathel"
+    },
+    "npc000001": {
+      "cn": "Storage_Keeper_Roche"
+    },
+    "npc000004": {
+      "cn": "Ailee"
+    },
+    "npc000005": {
+      "cn": "Eleanor"
+    },
+    "npc000011": {
+      "cn": "Darian"
+    },
+    "npc0033": {
+      "cn": "Nebris"
+    },
+    "npc200551": {
+      "cn": "Determined_Researcher"
+    },
+    "npc300103": {
+      "cn": "Garinoth"
+    },
+    "npc300104": {
+      "cn": "Asmode"
+    },
+    "npc300302": {
+      "cn": "Elpis"
+    },
+    "npc300501": {
+      "cn": "Loen"
+    },
+    "npc300601": {
+      "cn": "Guild_Recepionist_Liza"
+    },
+    "npc300701": {
+      "cn": "Veila"
+    },
+    "npc400001": {
+      "cn": "Child_Liberta"
+    },
+    "npc400011": {
+      "cn": "Sonya"
+    },
+    "npc400017": {
+      "cn": "Child_Hansen"
+    },
+    "npc400018": {
+      "cn": "Hansen"
+    },
+    "npc400019": {
+      "cn": "Granadair"
+    },
+    "npc400034": {
+      "cn": "Greta"
+    },
+    "npc400042": {
+      "cn": "Night_World_Lathel"
+    },
+    "npc400049": {
+      "cn": "King_of_Rotein_Gray"
+    },
+    "npc400050": {
+      "cn": "Spatti"
+    },
+    "npc400064": {
+      "cn": "Casual_Valze"
+    },
+    "npc400070": {
+      "cn": "Nekyndalia"
+    },
+    "npc400098": {
+      "cn": "Casino_Rudina"
+    },
+    "npc400100": {
+      "cn": "Rudina"
+    },
+    "npc400123": {
+      "cn": "Valze"
+    },
+    "npc400135": {
+      "cn": "Child_Justia"
+    },
+    "npc_ellin": {
+      "cn": "Ellin"
+    },
+    "olivier": {
+      "cn": "Olivier"
+    },
+    "olstein": {
+      "cn": "Olstein"
+    },
+    "palette": {
+      "cn": "Palette"
+    },
+    "priestess": {
+      "cn": "Priestess"
+    },
+    "rafina": {
+      "cn": "Rafina"
+    },
+    "refithea": {
+      "cn": "Refithea"
+    },
+    "remnunt": {
+      "cn": "Remnunt"
+    },
+    "ren_yamashiro": {
+      "cn": "Ren_Yamashiro"
+    },
+    "rigenette": {
+      "cn": "Rigenette"
+    },
+    "rou": {
+      "cn": "Rou"
+    },
+    "roxy": {
+      "cn": "Roxy"
+    },
+    "rubia": {
+      "cn": "Rubia"
+    },
+    "rudina": {
+      "cn": "Rudina"
+    },
+    "sacred_justia": {
+      "cn": "Sacred_Justia"
+    },
+    "samay": {
+      "cn": "Samay"
+    },
+    "scheherazade": {
+      "cn": "Scheherazade"
+    },
+    "seir": {
+      "cn": "Seir"
+    },
+    "sonya": {
+      "cn": "Sonya"
+    },
+    "spatti": {
+      "cn": "Spatti"
+    },
+    "storage_keeper_roche": {
+      "cn": "Storage_Keeper_Roche"
+    },
+    "sword_maiden": {
+      "cn": "Sword_Maiden"
+    },
+    "sylvia": {
+      "cn": "Sylvia"
+    },
+    "tenka_izumo": {
+      "cn": "Tenka_Izumo"
+    },
+    "teresse": {
+      "cn": "Teresse"
+    },
+    "tyr": {
+      "cn": "Tyr"
+    },
+    "valze": {
+      "cn": "Valze"
+    },
+    "veila": {
+      "cn": "Veila"
+    },
+    "venaka": {
+      "cn": "Venaka"
+    },
+    "ventana": {
+      "cn": "Ventana"
+    },
+    "wiggle": {
+      "cn": "Wiggle"
+    },
+    "wilhelmina": {
+      "cn": "Wilhelmina"
+    },
+    "yomi": {
+      "cn": "Yomi"
+    },
+    "yozakura": {
+      "cn": "Yozakura"
+    },
+    "yumi": {
+      "cn": "Yumi"
+    },
+    "yuri": {
+      "cn": "Yuri"
+    },
+    "zenith": {
+      "cn": "Zenith"
+    }
   },
   "skins": {
+    "char000101": {
+      "char": "lathel",
+      "cn": "Herb_Tracker"
+    },
+    "char000102": {
+      "char": "lathel",
+      "cn": "Lonely_Survivor"
+    },
+    "char000103": {
+      "char": "lathel",
+      "cn": "Homunculus"
+    },
+    "char000104": {
+      "char": "lathel",
+      "cn": "Dark_Knight"
+    },
+    "char000105": {
+      "char": "lathel",
+      "cn": "Promise_of_Vengeance"
+    },
+    "char000106": {
+      "char": "lathel",
+      "cn": "Pool_Party"
+    },
+    "char000201": {
+      "char": "justia",
+      "cn": "Knight_of_Blood"
+    },
+    "char000202": {
+      "char": "justia",
+      "cn": "White_Reaper"
+    },
+    "char000203": {
+      "char": "justia",
+      "cn": "Blood_Glutton"
+    },
+    "char000204": {
+      "char": "justia",
+      "cn": "Kendo_Club"
+    },
+    "char000206": {
+      "char": "justia",
+      "cn": "Pool_Party"
+    },
+    "char000296": {
+      "char": "justia",
+      "cn": "Hot_Summer_Dream"
+    },
+    "char000301": {
+      "char": "scheherazade",
+      "cn": "The_Lapis_Witch"
+    },
+    "char000303": {
+      "char": "scheherazade",
+      "cn": "The_Magic_School_Professor"
+    },
+    "char000304": {
+      "char": "scheherazade",
+      "cn": "Code_Name_S"
+    },
+    "char000306": {
+      "char": "scheherazade",
+      "cn": "Pool_Party"
+    },
+    "char000396": {
+      "char": "scheherazade",
+      "cn": "Deliberate_Ace"
+    },
+    "char000401": {
+      "char": "gray",
+      "cn": "The_Sharpshooter_of_the_Mist"
+    },
+    "char000402": {
+      "char": "gray",
+      "cn": "B-Rank_Manager"
+    },
+    "char000403": {
+      "char": "gray",
+      "cn": "Vanguard"
+    },
+    "char000406": {
+      "char": "gray",
+      "cn": "Pool_Party"
+    },
+    "char000501": {
+      "char": "rou",
+      "cn": "White_Cat"
+    },
+    "char000502": {
+      "char": "rou",
+      "cn": "Red_Riding_Hood"
+    },
+    "char000504": {
+      "char": "rou",
+      "cn": "Nature's_Claw"
+    },
+    "char000506": {
+      "char": "rou",
+      "cn": "Stray_Cat"
+    },
+    "char000601": {
+      "char": "olstein",
+      "cn": "The_Fiend_Scholar"
+    },
+    "char000604": {
+      "char": "olstein",
+      "cn": "Sage_of_Blue_Clouds"
+    },
+    "char000701": {
+      "char": "eclipse",
+      "cn": "Dimension_Witch"
+    },
+    "char000706": {
+      "char": "eclipse",
+      "cn": "Nightmare_Bunny"
+    },
+    "char000707": {
+      "char": "eclipse",
+      "cn": "Beach_Vacation"
+    },
+    "char000708": {
+      "char": "eclipse",
+      "cn": "Dream_Bride"
+    },
+    "char000801": {
+      "char": "rubia",
+      "cn": "Thorn_of_the_Desert"
+    },
+    "char000804": {
+      "char": "rubia",
+      "cn": "The_Empress_of_the_Ocean"
+    },
+    "char000806": {
+      "char": "rubia",
+      "cn": "Maid_Name_C"
+    },
+    "char000807": {
+      "char": "rubia",
+      "cn": "Maid_Bikini"
+    },
+    "char001001": {
+      "char": "sylvia",
+      "cn": "Desert_Flower"
+    },
+    "char001002": {
+      "char": "sylvia",
+      "cn": "The_Sword_Queen"
+    },
+    "char001004": {
+      "char": "sylvia",
+      "cn": "Admiral"
+    },
+    "char001006": {
+      "char": "sylvia",
+      "cn": "Bikini_Agent"
+    },
+    "char001092": {
+      "char": "sylvia",
+      "cn": "Crimson_Lotus"
+    },
+    "char001101": {
+      "char": "teresse",
+      "cn": "Angel_of_Destruction"
+    },
+    "char001106": {
+      "char": "teresse",
+      "cn": "Medical_Club"
+    },
+    "char001107": {
+      "char": "teresse",
+      "cn": "Beachside_Angel"
+    },
+    "char001197": {
+      "char": "teresse",
+      "cn": "Milky_Bikini"
+    },
+    "char001201": {
+      "char": "liatris",
+      "cn": "Rodev's_Star"
+    },
+    "char001206": {
+      "char": "liatris",
+      "cn": "Neon_Stalker"
+    },
+    "char001207": {
+      "char": "liatris",
+      "cn": "Maid_Name_R"
+    },
+    "char002401": {
+      "char": "diana",
+      "cn": "Adventurer_of_the_Unknown"
+    },
+    "char002403": {
+      "char": "diana",
+      "cn": "Magical_Innovator"
+    },
+    "char002406": {
+      "char": "diana",
+      "cn": "Anti-Dystopia"
+    },
+    "char003001": {
+      "char": "layla",
+      "cn": "Anvil_of_Creation"
+    },
+    "char003101": {
+      "char": "elpis",
+      "cn": "Hand_of_Salvation"
+    },
+    "char003201": {
+      "char": "loen",
+      "cn": "Last_Hope"
+    },
+    "char003202": {
+      "char": "loen",
+      "cn": "Track_and_Field_Team"
+    },
+    "char003203": {
+      "char": "loen",
+      "cn": "Celebrity_Bunny"
+    },
+    "char003301": {
+      "char": "nebris",
+      "cn": "Labyrinth_Gatekeeper"
+    },
+    "char003302": {
+      "char": "nebris",
+      "cn": "Laid-back_Lifeguard"
+    },
+    "char003303": {
+      "char": "nebris",
+      "cn": "New_Hire"
+    },
+    "char003392": {
+      "char": "nebris",
+      "cn": "Lucky_Bikini"
+    },
+    "char003401": {
+      "char": "morpeah",
+      "cn": "Beach_Vacation"
+    },
+    "char003402": {
+      "char": "morpeah",
+      "cn": "Daydream_Bunny"
+    },
+    "char003403": {
+      "char": "morpeah",
+      "cn": "Apostle"
+    },
+    "char003501": {
+      "char": "sacred_justia",
+      "cn": "Reclaimed_Destiny"
+    },
+    "char003601": {
+      "char": "olivier",
+      "cn": "Faithful_Wings"
+    },
+    "char003602": {
+      "char": "olivier",
+      "cn": "Apostle"
+    },
+    "char003603": {
+      "char": "olivier",
+      "cn": "Fallen_Wings"
+    },
+    "char003604": {
+      "char": "olivier",
+      "cn": "Retired_Legend"
+    },
+    "char003701": {
+      "char": "blade",
+      "cn": "Apostle"
+    },
+    "char003702": {
+      "char": "blade",
+      "cn": "Onsen_Swordfighter"
+    },
+    "char003703": {
+      "char": "blade",
+      "cn": "Young_Lady"
+    },
+    "char003793": {
+      "char": "blade",
+      "cn": "Tender_Dream"
+    },
+    "char003801": {
+      "char": "liberta",
+      "cn": "Dark_Saintess"
+    },
+    "char003802": {
+      "char": "liberta",
+      "cn": "Onsen_Manager"
+    },
+    "char003803": {
+      "char": "liberta",
+      "cn": "Miracle_Rose"
+    },
+    "char003892": {
+      "char": "liberta",
+      "cn": "Hedonist"
+    },
+    "char003901": {
+      "char": "sonya",
+      "cn": "Shadowed_Dream"
+    },
+    "char003902": {
+      "char": "sonya",
+      "cn": "Little_Pumpkin_Girl"
+    },
+    "char004001": {
+      "char": "darian",
+      "cn": "Prophetic_Dream"
+    },
+    "char004002": {
+      "char": "darian",
+      "cn": "Bittersweet_Bunny"
+    },
+    "char004091": {
+      "char": "darian",
+      "cn": "Herald_of_Enlightenment"
+    },
+    "char004101": {
+      "char": "tyr",
+      "cn": "Starlight_Guardian"
+    },
+    "char004102": {
+      "char": "tyr",
+      "cn": "Innocent_Bunny"
+    },
+    "char004201": {
+      "char": "palette",
+      "cn": "Shattered_Dream"
+    },
+    "char004202": {
+      "char": "palette",
+      "cn": "Miracle_Violet"
+    },
+    "char004301": {
+      "char": "nekyndalia",
+      "cn": "Deadeye"
+    },
+    "char020001": {
+      "char": "eris",
+      "cn": "Esteemed_Adventurer"
+    },
+    "char020002": {
+      "char": "eris",
+      "cn": "Your_Very_Own_Cat"
+    },
+    "char020101": {
+      "char": "roxy",
+      "cn": "Respected_Master"
+    },
+    "char020102": {
+      "char": "roxy",
+      "cn": "Emerging_Desire"
+    },
+    "char020201": {
+      "char": "yomi",
+      "cn": "Gentle_Destroyer"
+    },
+    "char020301": {
+      "char": "yozakura",
+      "cn": "Fist_of_Conviction"
+    },
+    "char020401": {
+      "char": "yumi",
+      "cn": "Dancing_Snowflake"
+    },
+    "char020501": {
+      "char": "hikage",
+      "cn": "Kind_Ruthlessness"
+    },
+    "char020601": {
+      "char": "goblin_slayer",
+      "cn": "Orcbolg"
+    },
+    "char020701": {
+      "char": "priestess",
+      "cn": "Earth_Mother_Believer"
+    },
+    "char020801": {
+      "char": "high_elf_archer",
+      "cn": "Daughter_of_Starwind"
+    },
+    "char020901": {
+      "char": "sword_maiden",
+      "cn": "Supreme_God_Archbishop"
+    },
+    "char021001": {
+      "char": "ikaruga",
+      "cn": "Noble_Flame"
+    },
+    "char021101": {
+      "char": "kyouka_uzen",
+      "cn": "Eternal_Chains"
+    },
+    "char021201": {
+      "char": "tenka_izumo",
+      "cn": "Ame-no-Mitori"
+    },
+    "char021291": {
+      "char": "tenka_izumo",
+      "cn": "Special_Date"
+    },
+    "char021301": {
+      "char": "ren_yamashiro",
+      "cn": "Lord_of_the_Cosmos"
+    },
+    "char021391": {
+      "char": "ren_yamashiro",
+      "cn": "Role_Reversal"
+    },
+    "char060301": {
+      "char": "alec",
+      "cn": "The_Destruction"
+    },
+    "char060302": {
+      "char": "alec",
+      "cn": "Sword_Breaker"
+    },
+    "char060401": {
+      "char": "celia",
+      "cn": "The_Curse"
+    },
+    "char060402": {
+      "char": "celia",
+      "cn": "Descendant_of_the_Great_Witch"
+    },
+    "char060403": {
+      "char": "celia",
+      "cn": "Masquerade_Bunny"
+    },
+    "char060501": {
+      "char": "anastasia",
+      "cn": "Gentle_Maid"
+    },
+    "char060502": {
+      "char": "anastasia",
+      "cn": "Fire_Graffiti"
+    },
+    "char060601": {
+      "char": "lecliss",
+      "cn": "Killer_Doll"
+    },
+    "char060602": {
+      "char": "lecliss",
+      "cn": "Android_Queen"
+    },
+    "char060701": {
+      "char": "rafina",
+      "cn": "Steel_Engine"
+    },
+    "char060702": {
+      "char": "rafina",
+      "cn": "Code_Name_A"
+    },
+    "char060706": {
+      "char": "rafina",
+      "cn": "Game_Club"
+    },
+    "char060801": {
+      "char": "elise",
+      "cn": "Lovely_Lady"
+    },
+    "char060802": {
+      "char": "elise",
+      "cn": "Code_Name_O"
+    },
+    "char060804": {
+      "char": "elise",
+      "cn": "Naive_Lady"
+    },
+    "char061001": {
+      "char": "helena",
+      "cn": "Top_Idol"
+    },
+    "char061002": {
+      "char": "helena",
+      "cn": "B-Rank_Idol"
+    },
+    "char061003": {
+      "char": "helena",
+      "cn": "Sunny_Inn_Hand"
+    },
+    "char061092": {
+      "char": "helena",
+      "cn": "Rising_Star"
+    },
+    "char061101": {
+      "char": "eleaneer",
+      "cn": "Piercing_Magic_Bow"
+    },
+    "char061102": {
+      "char": "eleaneer",
+      "cn": "B-Rank_Idol"
+    },
+    "char061103": {
+      "char": "eleaneer",
+      "cn": "Shadow_Bunny"
+    },
+    "char061302": {
+      "char": "dalvi",
+      "cn": "Bright_Moon"
+    },
+    "char061305": {
+      "char": "dalvi",
+      "cn": "Summer_Vacation"
+    },
+    "char061306": {
+      "char": "dalvi",
+      "cn": "Tricky_Lover"
+    },
+    "char061392": {
+      "char": "dalvi",
+      "cn": "Butterfly_Dream"
+    },
+    "char061402": {
+      "char": "zenith",
+      "cn": "Robin_Hood"
+    },
+    "char061404": {
+      "char": "zenith",
+      "cn": "Poolside_Guardian"
+    },
+    "char061492": {
+      "char": "zenith",
+      "cn": "Stranger_Bunny"
+    },
+    "char062001": {
+      "char": "andrew",
+      "cn": "Loyal_Butler"
+    },
+    "char062002": {
+      "char": "andrew",
+      "cn": "Specialist"
+    },
+    "char063001": {
+      "char": "ingrid",
+      "cn": "Kardis'_Bullet"
+    },
+    "char063301": {
+      "char": "cynthia",
+      "cn": "Warmth_within_the_Severe_Cold"
+    },
+    "char063401": {
+      "char": "julie",
+      "cn": "Healer"
+    },
+    "char065102": {
+      "char": "yuri",
+      "cn": "Whitebolt"
+    },
+    "char065103": {
+      "char": "yuri",
+      "cn": "Comeback_Idol"
+    },
+    "char065193": {
+      "char": "yuri",
+      "cn": "Forever_Mascot"
+    },
+    "char065802": {
+      "char": "nartas",
+      "cn": "Anonymous_Sage"
+    },
+    "char066401": {
+      "char": "angelica",
+      "cn": "The_Fallen"
+    },
+    "char066402": {
+      "char": "angelica",
+      "cn": "Pool_Party"
+    },
+    "char066403": {
+      "char": "angelica",
+      "cn": "Neon_Savior"
+    },
+    "char066801": {
+      "char": "refithea",
+      "cn": "The_Gluttonous"
+    },
+    "char066802": {
+      "char": "refithea",
+      "cn": "Pure_White_Blessing"
+    },
+    "char066803": {
+      "char": "refithea",
+      "cn": "Poolside_Fairy"
+    },
+    "char066902": {
+      "char": "glacia",
+      "cn": "Alice"
+    },
+    "char066906": {
+      "char": "glacia",
+      "cn": "Disciplinary_Committee"
+    },
+    "char066907": {
+      "char": "glacia",
+      "cn": "Heavenly_Guardian_Successor"
+    },
+    "char067002": {
+      "char": "ventana",
+      "cn": "Snow_White"
+    },
+    "char067003": {
+      "char": "ventana",
+      "cn": "Comeback_Idol"
+    },
+    "char067004": {
+      "char": "ventana",
+      "cn": "Onsen_Practitioner"
+    },
+    "char067101": {
+      "char": "granhildr",
+      "cn": "The_Void"
+    },
+    "char067102": {
+      "char": "granhildr",
+      "cn": "Comeback_Idol"
+    },
+    "char067103": {
+      "char": "granhildr",
+      "cn": "Boo_Ghost"
+    },
+    "char067104": {
+      "char": "granhildr",
+      "cn": "Combat_Medic"
+    },
+    "char067201": {
+      "char": "venaka",
+      "cn": "DJ"
+    },
+    "char067202": {
+      "char": "venaka",
+      "cn": "Wind_Dancer"
+    },
+    "char067301": {
+      "char": "levia",
+      "cn": "Track_and_Field_Captain"
+    },
+    "char067302": {
+      "char": "levia",
+      "cn": "Night_of_Jealousy"
+    },
+    "char067303": {
+      "char": "levia",
+      "cn": "Overheat"
+    },
+    "char067401": {
+      "char": "michaela",
+      "cn": "Beachside_Justice"
+    },
+    "char067402": {
+      "char": "michaela",
+      "cn": "Queen_of_Signatures"
+    },
+    "char067403": {
+      "char": "michaela",
+      "cn": "Acting_Archbishop"
+    },
+    "char067491": {
+      "char": "michaela",
+      "cn": "True_Liberation"
+    },
+    "char067502": {
+      "char": "luvencia",
+      "cn": "Deal_Snatcher"
+    },
+    "char067503": {
+      "char": "luvencia",
+      "cn": "Wild_Dog"
+    },
+    "char067504": {
+      "char": "luvencia",
+      "cn": "Ocean_Vanguard"
+    },
+    "char067601": {
+      "char": "wilhelmina",
+      "cn": "Iron_Monarch"
+    },
+    "char067603": {
+      "char": "wilhelmina",
+      "cn": "Water_Park_Queen"
+    },
+    "char067604": {
+      "char": "wilhelmina",
+      "cn": "Frozen_Queen"
+    },
+    "char067701": {
+      "char": "granadair",
+      "cn": "Shrine_Maiden_of_Purification"
+    },
+    "char067702": {
+      "char": "granadair",
+      "cn": "Queen_of_Gluttis"
+    },
+    "char067801": {
+      "char": "mamonir",
+      "cn": "Night_of_Death"
+    },
+    "char067803": {
+      "char": "mamonir",
+      "cn": "Miracle_Marine"
+    },
+    "char067901": {
+      "char": "aquila",
+      "cn": "Savage_Warrior"
+    },
+    "char100101": {
+      "char": "gynt",
+      "cn": "Lugo_Hunter"
+    },
+    "char100201": {
+      "char": "fred",
+      "cn": "Lugo_Defense_Force"
+    },
+    "char100301": {
+      "char": "lisianne",
+      "cn": "Wandering_Priest"
+    },
+    "char100401": {
+      "char": "remnunt",
+      "cn": "Combat_Doctor"
+    },
+    "char100501": {
+      "char": "wiggle",
+      "cn": "Bomb_Fanatic"
+    },
+    "char100502": {
+      "char": "wiggle",
+      "cn": "Bomb_in_the_Hoodie"
+    },
+    "char100601": {
+      "char": "lucrezia",
+      "cn": "Seductive_Wings"
+    },
+    "char100801": {
+      "char": "bernie",
+      "cn": "Righteous_Raider_Girl"
+    },
+    "char101101": {
+      "char": "seir",
+      "cn": "Demon's_Daughter"
+    },
+    "char101102": {
+      "char": "seir",
+      "cn": "B-Rank_Idol"
+    },
+    "char101103": {
+      "char": "seir",
+      "cn": "New_Hire"
+    },
+    "char101201": {
+      "char": "jayden",
+      "cn": "Beautiful_Girl_Devotee"
+    },
+    "char101202": {
+      "char": "jayden",
+      "cn": "Manga_Research_Club"
+    },
+    "char101301": {
+      "char": "emma",
+      "cn": "Haggard_Delinquent"
+    },
+    "char101302": {
+      "char": "emma",
+      "cn": "School_Queen"
+    },
+    "char101401": {
+      "char": "samay",
+      "cn": "Kind_Liberator"
+    },
+    "char101402": {
+      "char": "samay",
+      "cn": "Kind_Student"
+    },
+    "char101501": {
+      "char": "kry",
+      "cn": "Liberated_Marauder"
+    },
+    "char101502": {
+      "char": "kry",
+      "cn": "Violent_Student"
+    },
+    "char103201": {
+      "char": "carlson",
+      "cn": "The_Mercenary_Knight"
+    },
+    "char103301": {
+      "char": "lydia",
+      "cn": "Apprentice_Spearman"
+    },
+    "char103401": {
+      "char": "rigenette",
+      "cn": "Little_Hunter"
+    },
+    "char103501": {
+      "char": "beatrice",
+      "cn": "The_Mighty_Warrior_of_the_Tribe"
+    },
+    "char103601": {
+      "char": "maria",
+      "cn": "Archmage"
+    },
+    "char103701": {
+      "char": "arines",
+      "cn": "Priest_of_Vitality"
+    },
+    "cutscene_char000101": {
+      "char": "lathel",
+      "cn": "Herb_Tracker"
+    },
+    "cutscene_char000103": {
+      "char": "lathel",
+      "cn": "Homunculus"
+    },
+    "cutscene_char000201": {
+      "char": "justia",
+      "cn": "Knight_of_Blood"
+    },
+    "cutscene_char000202": {
+      "char": "justia",
+      "cn": "White_Reaper"
+    },
+    "cutscene_char000203": {
+      "char": "justia",
+      "cn": "Blood_Glutton"
+    },
+    "cutscene_char000204": {
+      "char": "justia",
+      "cn": "Kendo_Club"
+    },
+    "cutscene_char000206": {
+      "char": "justia",
+      "cn": "Pool_Party"
+    },
+    "cutscene_char000296": {
+      "char": "justia",
+      "cn": "Hot_Summer_Dream"
+    },
+    "cutscene_char000301": {
+      "char": "scheherazade",
+      "cn": "The_Lapis_Witch"
+    },
+    "cutscene_char000303": {
+      "char": "scheherazade",
+      "cn": "The_Magic_School_Professor"
+    },
+    "cutscene_char000304": {
+      "char": "scheherazade",
+      "cn": "Code_Name_S"
+    },
+    "cutscene_char000306": {
+      "char": "scheherazade",
+      "cn": "Pool_Party"
+    },
+    "cutscene_char000396": {
+      "char": "scheherazade",
+      "cn": "Deliberate_Ace"
+    },
+    "cutscene_char000401": {
+      "char": "gray",
+      "cn": "The_Sharpshooter_of_the_Mist"
+    },
+    "cutscene_char000501": {
+      "char": "rou",
+      "cn": "White_Cat"
+    },
+    "cutscene_char000502": {
+      "char": "rou",
+      "cn": "Red_Riding_Hood"
+    },
+    "cutscene_char000504": {
+      "char": "rou",
+      "cn": "Nature's_Claw"
+    },
+    "cutscene_char000506": {
+      "char": "rou",
+      "cn": "Stray_Cat"
+    },
+    "cutscene_char000604": {
+      "char": "olstein",
+      "cn": "Sage_of_Blue_Clouds"
+    },
+    "cutscene_char000701": {
+      "char": "eclipse",
+      "cn": "Dimension_Witch"
+    },
+    "cutscene_char000706": {
+      "char": "eclipse",
+      "cn": "Nightmare_Bunny"
+    },
+    "cutscene_char000707": {
+      "char": "eclipse",
+      "cn": "Beach_Vacation"
+    },
+    "cutscene_char000708": {
+      "char": "eclipse",
+      "cn": "Dream_Bride"
+    },
+    "cutscene_char000801": {
+      "char": "rubia",
+      "cn": "Thorn_of_the_Desert"
+    },
+    "cutscene_char000804": {
+      "char": "rubia",
+      "cn": "The_Empress_of_the_Ocean"
+    },
+    "cutscene_char000806": {
+      "char": "rubia",
+      "cn": "Maid_Name_C"
+    },
+    "cutscene_char000807": {
+      "char": "rubia",
+      "cn": "Maid_Bikini"
+    },
+    "cutscene_char001001": {
+      "char": "sylvia",
+      "cn": "Desert_Flower"
+    },
+    "cutscene_char001002": {
+      "char": "sylvia",
+      "cn": "The_Sword_Queen"
+    },
+    "cutscene_char001004": {
+      "char": "sylvia",
+      "cn": "Admiral"
+    },
+    "cutscene_char001006": {
+      "char": "sylvia",
+      "cn": "Bikini_Agent"
+    },
+    "cutscene_char001092": {
+      "char": "sylvia",
+      "cn": "Crimson_Lotus"
+    },
+    "cutscene_char001101": {
+      "char": "teresse",
+      "cn": "Angel_of_Destruction"
+    },
+    "cutscene_char001106": {
+      "char": "teresse",
+      "cn": "Medical_Club"
+    },
+    "cutscene_char001107": {
+      "char": "teresse",
+      "cn": "Beachside_Angel"
+    },
+    "cutscene_char001197": {
+      "char": "teresse",
+      "cn": "Milky_Bikini"
+    },
+    "cutscene_char001201": {
+      "char": "liatris",
+      "cn": "Rodev's_Star"
+    },
+    "cutscene_char001206": {
+      "char": "liatris",
+      "cn": "Neon_Stalker"
+    },
+    "cutscene_char001207": {
+      "char": "liatris",
+      "cn": "Maid_Name_R"
+    },
+    "cutscene_char002401": {
+      "char": "diana",
+      "cn": "Adventurer_of_the_Unknown"
+    },
+    "cutscene_char002403": {
+      "char": "diana",
+      "cn": "Magical_Innovator"
+    },
+    "cutscene_char002406": {
+      "char": "diana",
+      "cn": "Anti-Dystopia"
+    },
+    "cutscene_char003101": {
+      "char": "elpis",
+      "cn": "Hand_of_Salvation"
+    },
+    "cutscene_char003201": {
+      "char": "loen",
+      "cn": "Last_Hope"
+    },
+    "cutscene_char003202": {
+      "char": "loen",
+      "cn": "Track_and_Field_Team"
+    },
+    "cutscene_char003203": {
+      "char": "loen",
+      "cn": "Celebrity_Bunny"
+    },
+    "cutscene_char003301": {
+      "char": "nebris",
+      "cn": "Labyrinth_Gatekeeper"
+    },
+    "cutscene_char003302": {
+      "char": "nebris",
+      "cn": "Laid-back_Lifeguard"
+    },
+    "cutscene_char003303": {
+      "char": "nebris",
+      "cn": "New_Hire"
+    },
+    "cutscene_char003392": {
+      "char": "nebris",
+      "cn": "Lucky_Bikini"
+    },
+    "cutscene_char003401": {
+      "char": "morpeah",
+      "cn": "Beach_Vacation"
+    },
+    "cutscene_char003402": {
+      "char": "morpeah",
+      "cn": "Daydream_Bunny"
+    },
+    "cutscene_char003403": {
+      "char": "morpeah",
+      "cn": "Apostle"
+    },
+    "cutscene_char003501": {
+      "char": "sacred_justia",
+      "cn": "Reclaimed_Destiny"
+    },
+    "cutscene_char003601": {
+      "char": "olivier",
+      "cn": "Faithful_Wings"
+    },
+    "cutscene_char003602": {
+      "char": "olivier",
+      "cn": "Apostle"
+    },
+    "cutscene_char003603": {
+      "char": "olivier",
+      "cn": "Fallen_Wings"
+    },
+    "cutscene_char003604": {
+      "char": "olivier",
+      "cn": "Retired_Legend"
+    },
+    "cutscene_char003701": {
+      "char": "blade",
+      "cn": "Apostle"
+    },
+    "cutscene_char003702": {
+      "char": "blade",
+      "cn": "Onsen_Swordfighter"
+    },
+    "cutscene_char003703": {
+      "char": "blade",
+      "cn": "Young_Lady"
+    },
+    "cutscene_char003793": {
+      "char": "blade",
+      "cn": "Tender_Dream"
+    },
+    "cutscene_char003801": {
+      "char": "liberta",
+      "cn": "Dark_Saintess"
+    },
+    "cutscene_char003802": {
+      "char": "liberta",
+      "cn": "Onsen_Manager"
+    },
+    "cutscene_char003803": {
+      "char": "liberta",
+      "cn": "Miracle_Rose"
+    },
+    "cutscene_char003892": {
+      "char": "liberta",
+      "cn": "Hedonist"
+    },
+    "cutscene_char003901": {
+      "char": "sonya",
+      "cn": "Shadowed_Dream"
+    },
+    "cutscene_char003902": {
+      "char": "sonya",
+      "cn": "Little_Pumpkin_Girl"
+    },
+    "cutscene_char004001": {
+      "char": "darian",
+      "cn": "Prophetic_Dream"
+    },
+    "cutscene_char004002": {
+      "char": "darian",
+      "cn": "Bittersweet_Bunny"
+    },
+    "cutscene_char004091": {
+      "char": "darian",
+      "cn": "Herald_of_Enlightenment"
+    },
+    "cutscene_char004101": {
+      "char": "tyr",
+      "cn": "Starlight_Guardian"
+    },
+    "cutscene_char004102": {
+      "char": "tyr",
+      "cn": "Innocent_Bunny"
+    },
+    "cutscene_char004201": {
+      "char": "palette",
+      "cn": "Shattered_Dream"
+    },
+    "cutscene_char004202": {
+      "char": "palette",
+      "cn": "Miracle_Violet"
+    },
+    "cutscene_char004301": {
+      "char": "nekyndalia",
+      "cn": "Deadeye"
+    },
+    "cutscene_char020001": {
+      "char": "eris",
+      "cn": "Esteemed_Adventurer"
+    },
+    "cutscene_char020002": {
+      "char": "eris",
+      "cn": "Your_Very_Own_Cat"
+    },
+    "cutscene_char020101": {
+      "char": "roxy",
+      "cn": "Respected_Master"
+    },
+    "cutscene_char020102": {
+      "char": "roxy",
+      "cn": "Emerging_Desire"
+    },
+    "cutscene_char020201": {
+      "char": "yomi",
+      "cn": "Gentle_Destroyer"
+    },
+    "cutscene_char020301": {
+      "char": "yozakura",
+      "cn": "Fist_of_Conviction"
+    },
+    "cutscene_char020401": {
+      "char": "yumi",
+      "cn": "Dancing_Snowflake"
+    },
+    "cutscene_char020501": {
+      "char": "hikage",
+      "cn": "Kind_Ruthlessness"
+    },
+    "cutscene_char020601": {
+      "char": "goblin_slayer",
+      "cn": "Orcbolg"
+    },
+    "cutscene_char020701": {
+      "char": "priestess",
+      "cn": "Earth_Mother_Believer"
+    },
+    "cutscene_char020801": {
+      "char": "high_elf_archer",
+      "cn": "Daughter_of_Starwind"
+    },
+    "cutscene_char020901": {
+      "char": "sword_maiden",
+      "cn": "Supreme_God_Archbishop"
+    },
+    "cutscene_char021001": {
+      "char": "ikaruga",
+      "cn": "Noble_Flame"
+    },
+    "cutscene_char021101": {
+      "char": "kyouka_uzen",
+      "cn": "Eternal_Chains"
+    },
+    "cutscene_char021201": {
+      "char": "tenka_izumo",
+      "cn": "Ame-no-Mitori"
+    },
+    "cutscene_char021291": {
+      "char": "tenka_izumo",
+      "cn": "Special_Date"
+    },
+    "cutscene_char021301": {
+      "char": "ren_yamashiro",
+      "cn": "Lord_of_the_Cosmos"
+    },
+    "cutscene_char021391": {
+      "char": "ren_yamashiro",
+      "cn": "Role_Reversal"
+    },
+    "cutscene_char060401": {
+      "char": "celia",
+      "cn": "The_Curse"
+    },
+    "cutscene_char060402": {
+      "char": "celia",
+      "cn": "Descendant_of_the_Great_Witch"
+    },
+    "cutscene_char060403": {
+      "char": "celia",
+      "cn": "Masquerade_Bunny"
+    },
+    "cutscene_char060501": {
+      "char": "anastasia",
+      "cn": "Gentle_Maid"
+    },
+    "cutscene_char060502": {
+      "char": "anastasia",
+      "cn": "Fire_Graffiti"
+    },
+    "cutscene_char060601": {
+      "char": "lecliss",
+      "cn": "Killer_Doll"
+    },
+    "cutscene_char060602": {
+      "char": "lecliss",
+      "cn": "Android_Queen"
+    },
+    "cutscene_char060701": {
+      "char": "rafina",
+      "cn": "Steel_Engine"
+    },
+    "cutscene_char060702": {
+      "char": "rafina",
+      "cn": "Code_Name_A"
+    },
+    "cutscene_char060706": {
+      "char": "rafina",
+      "cn": "Game_Club"
+    },
+    "cutscene_char060801": {
+      "char": "elise",
+      "cn": "Lovely_Lady"
+    },
+    "cutscene_char060802": {
+      "char": "elise",
+      "cn": "Code_Name_O"
+    },
+    "cutscene_char060804": {
+      "char": "elise",
+      "cn": "Naive_Lady"
+    },
+    "cutscene_char061001": {
+      "char": "helena",
+      "cn": "Top_Idol"
+    },
+    "cutscene_char061002": {
+      "char": "helena",
+      "cn": "B-Rank_Idol"
+    },
+    "cutscene_char061003": {
+      "char": "helena",
+      "cn": "Sunny_Inn_Hand"
+    },
+    "cutscene_char061092": {
+      "char": "helena",
+      "cn": "Rising_Star"
+    },
+    "cutscene_char061101": {
+      "char": "eleaneer",
+      "cn": "Piercing_Magic_Bow"
+    },
+    "cutscene_char061102": {
+      "char": "eleaneer",
+      "cn": "B-Rank_Idol"
+    },
+    "cutscene_char061103": {
+      "char": "eleaneer",
+      "cn": "Shadow_Bunny"
+    },
+    "cutscene_char061302": {
+      "char": "dalvi",
+      "cn": "Bright_Moon"
+    },
+    "cutscene_char061305": {
+      "char": "dalvi",
+      "cn": "Summer_Vacation"
+    },
+    "cutscene_char061306": {
+      "char": "dalvi",
+      "cn": "Tricky_Lover"
+    },
+    "cutscene_char061392": {
+      "char": "dalvi",
+      "cn": "Butterfly_Dream"
+    },
+    "cutscene_char061402": {
+      "char": "zenith",
+      "cn": "Robin_Hood"
+    },
+    "cutscene_char061404": {
+      "char": "zenith",
+      "cn": "Poolside_Guardian"
+    },
+    "cutscene_char061492": {
+      "char": "zenith",
+      "cn": "Stranger_Bunny"
+    },
+    "cutscene_char065102": {
+      "char": "yuri",
+      "cn": "Whitebolt"
+    },
+    "cutscene_char065103": {
+      "char": "yuri",
+      "cn": "Comeback_Idol"
+    },
+    "cutscene_char065193": {
+      "char": "yuri",
+      "cn": "Forever_Mascot"
+    },
+    "cutscene_char065802": {
+      "char": "nartas",
+      "cn": "Anonymous_Sage"
+    },
+    "cutscene_char066401": {
+      "char": "angelica",
+      "cn": "The_Fallen"
+    },
+    "cutscene_char066402": {
+      "char": "angelica",
+      "cn": "Pool_Party"
+    },
+    "cutscene_char066403": {
+      "char": "angelica",
+      "cn": "Neon_Savior"
+    },
+    "cutscene_char066801": {
+      "char": "refithea",
+      "cn": "The_Gluttonous"
+    },
+    "cutscene_char066802": {
+      "char": "refithea",
+      "cn": "Pure_White_Blessing"
+    },
+    "cutscene_char066803": {
+      "char": "refithea",
+      "cn": "Poolside_Fairy"
+    },
+    "cutscene_char066902": {
+      "char": "glacia",
+      "cn": "Alice"
+    },
+    "cutscene_char066906": {
+      "char": "glacia",
+      "cn": "Disciplinary_Committee"
+    },
+    "cutscene_char066907": {
+      "char": "glacia",
+      "cn": "Heavenly_Guardian_Successor"
+    },
+    "cutscene_char067002": {
+      "char": "ventana",
+      "cn": "Snow_White"
+    },
+    "cutscene_char067003": {
+      "char": "ventana",
+      "cn": "Comeback_Idol"
+    },
+    "cutscene_char067004": {
+      "char": "ventana",
+      "cn": "Onsen_Practitioner"
+    },
+    "cutscene_char067101": {
+      "char": "granhildr",
+      "cn": "The_Void"
+    },
+    "cutscene_char067102": {
+      "char": "granhildr",
+      "cn": "Comeback_Idol"
+    },
+    "cutscene_char067103": {
+      "char": "granhildr",
+      "cn": "Boo_Ghost"
+    },
+    "cutscene_char067104": {
+      "char": "granhildr",
+      "cn": "Combat_Medic"
+    },
+    "cutscene_char067201": {
+      "char": "venaka",
+      "cn": "DJ"
+    },
+    "cutscene_char067202": {
+      "char": "venaka",
+      "cn": "Wind_Dancer"
+    },
+    "cutscene_char067301": {
+      "char": "levia",
+      "cn": "Track_and_Field_Captain"
+    },
+    "cutscene_char067302": {
+      "char": "levia",
+      "cn": "Night_of_Jealousy"
+    },
+    "cutscene_char067303": {
+      "char": "levia",
+      "cn": "Overheat"
+    },
+    "cutscene_char067401": {
+      "char": "michaela",
+      "cn": "Beachside_Justice"
+    },
+    "cutscene_char067402": {
+      "char": "michaela",
+      "cn": "Queen_of_Signatures"
+    },
+    "cutscene_char067403": {
+      "char": "michaela",
+      "cn": "Acting_Archbishop"
+    },
+    "cutscene_char067491": {
+      "char": "michaela",
+      "cn": "True_Liberation"
+    },
+    "cutscene_char067502": {
+      "char": "luvencia",
+      "cn": "Deal_Snatcher"
+    },
+    "cutscene_char067503": {
+      "char": "luvencia",
+      "cn": "Wild_Dog"
+    },
+    "cutscene_char067504": {
+      "char": "luvencia",
+      "cn": "Ocean_Vanguard"
+    },
+    "cutscene_char067601": {
+      "char": "wilhelmina",
+      "cn": "Iron_Monarch"
+    },
+    "cutscene_char067603": {
+      "char": "wilhelmina",
+      "cn": "Water_Park_Queen"
+    },
+    "cutscene_char067604": {
+      "char": "wilhelmina",
+      "cn": "Frozen_Queen"
+    },
+    "cutscene_char067701": {
+      "char": "granadair",
+      "cn": "Shrine_Maiden_of_Purification"
+    },
+    "cutscene_char067702": {
+      "char": "granadair",
+      "cn": "Queen_of_Gluttis"
+    },
+    "cutscene_char067801": {
+      "char": "mamonir",
+      "cn": "Night_of_Death"
+    },
+    "cutscene_char067803": {
+      "char": "mamonir",
+      "cn": "Miracle_Marine"
+    },
+    "cutscene_char067901": {
+      "char": "aquila",
+      "cn": "Savage_Warrior"
+    },
+    "cutscene_char100501": {
+      "char": "wiggle",
+      "cn": "Bomb_Fanatic"
+    },
+    "cutscene_char101101": {
+      "char": "seir",
+      "cn": "Demon's_Daughter"
+    },
+    "cutscene_char101102": {
+      "char": "seir",
+      "cn": "B-Rank_Idol"
+    },
+    "cutscene_char101103": {
+      "char": "seir",
+      "cn": "New_Hire"
+    },
+    "cutscene_char103201": {
+      "char": "carlson",
+      "cn": "The_Mercenary_Knight"
+    },
+    "cutscene_char103301": {
+      "char": "lydia",
+      "cn": "Apprentice_Spearman"
+    },
+    "cutscene_char103401": {
+      "char": "rigenette",
+      "cn": "Little_Hunter"
+    },
+    "cutscene_char103501": {
+      "char": "beatrice",
+      "cn": "The_Mighty_Warrior_of_the_Tribe"
+    },
+    "illust_dating1": {
+      "char": "nebris",
+      "cn": "New_Hire"
+    },
+    "illust_dating10": {
+      "char": "angelica",
+      "cn": "Neon_Savior"
+    },
+    "illust_dating11": {
+      "char": "eclipse",
+      "cn": "Nightmare_Bunny"
+    },
+    "illust_dating12": {
+      "char": "zenith",
+      "cn": "Stranger_Bunny"
+    },
+    "illust_dating13": {
+      "char": "tyr",
+      "cn": "Innocent_Bunny"
+    },
+    "illust_dating14": {
+      "char": "liberta",
+      "cn": "Hedonist"
+    },
+    "illust_dating15": {
+      "char": "ventana",
+      "cn": "Onsen_Practitioner"
+    },
+    "illust_dating16": {
+      "char": "olivier",
+      "cn": "Retired_Legend"
+    },
+    "illust_dating17": {
+      "char": "palette",
+      "cn": "Miracle_Violet"
+    },
+    "illust_dating18": {
+      "char": "scheherazade",
+      "cn": "Deliberate_Ace"
+    },
+    "illust_dating19": {
+      "char": "granhildr",
+      "cn": "Combat_Medic"
+    },
+    "illust_dating2": {
+      "char": "morpeah",
+      "cn": "Daydream_Bunny"
+    },
+    "illust_dating20": {
+      "char": "dalvi",
+      "cn": "Bright_Moon"
+    },
+    "illust_dating21": {
+      "char": "yuri",
+      "cn": "Forever_Mascot"
+    },
+    "illust_dating3": {
+      "char": "loen",
+      "cn": "Celebrity_Bunny"
+    },
+    "illust_dating4": {
+      "char": "teresse",
+      "cn": "Medical_Club"
+    },
+    "illust_dating5": {
+      "char": "elise",
+      "cn": "Code_Name_O"
+    },
+    "illust_dating6": {
+      "char": "wilhelmina",
+      "cn": "Water_Park_Queen"
+    },
+    "illust_dating7": {
+      "char": "justia",
+      "cn": "Hot_Summer_Dream"
+    },
+    "illust_dating8": {
+      "char": "sylvia",
+      "cn": "Bikini_Agent"
+    },
+    "illust_dating9": {
+      "char": "teresse",
+      "cn": "Milky_Bikini"
+    },
+    "illust_talk1": {
+      "char": "lathel",
+      "cn": "Herb_Tracker"
+    },
+    "illust_talk9013": {
+      "char": "lathel",
+      "cn": "Promise_of_Vengeance"
+    },
+    "illust_talk9014": {
+      "char": "lathel",
+      "cn": "Homunculus"
+    }
   }
 }

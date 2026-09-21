@@ -82,7 +82,7 @@ Texture2D 'telafaerjia' ... 'telafaerjia5'  (4096×4096/2048, ×5)
   （`atlas_to_textures` 为 atlas_pid → [tex_pid,...]）。
 - 名字兜底（atlas page 名 = Texture2D.m_Name+`.png`）保留为保底。
 
-## 棕色尘埃2 BrownDust2 ✅ 首个样本已打通（myroom 贴图 bundle）
+## 棕色尘埃2 BrownDust2 ✅ 端到端已通（spine/chibi 已用真实样本验证）
 
 ### 游戏本体
 
@@ -137,14 +137,30 @@ Texture2D 'telafaerjia' ... 'telafaerjia5'  (4096×4096/2048, ×5)
   `forced_unity_version`，打开前临时设置、用完还原，用 `warnings` 屏蔽烦人告警。
 - 若 2022.3.22f1 有 bundle 解析失败，备选 **2022.2.17f1** 可换。
 
-### 输出语义（BD2 适配器 v1）
+### 输出语义（参考程序逻辑移植，2026-09 真实样本已通）
 
-- 目录名 = catalog `readableName` 推导的角色标识（优先 `charXXXXXX` 查 names 表中文，
-  没有则取逻辑路径尾段），**不再用 hash 文件目录名**（不可读、会撞名）。
-- spine（复用 `core/spine.py`）：`<角色>/angel|bg/<base>.atlas|.skel|<贴图>.png`。
-- painting（整图，非切片）：`<角色>/illust/<贴图名>.png`。
-- 该适配器尚未拿到真实 Spine（atlas/skel）样本，`_extract_spine` 路径待真实 spine
-  bundle 验证；myroom 样本只走了 painting 路径。
+- 由参考程序（已删除）的 asset_extractor 逻辑移植：分类正则 / `getMappingId` /
+  `mapCharacterSpines` 等，见 `games/browndust2.py`；命名两表 `names/browndust2.json`
+  （characters 153 / skins 395）由参考程序 mapping.json 转换而来。
+- 目录结构：`spine/character interaction light_novel_talk npc skill_cutscene
+  special_animation miscellaneous`、`ui/costume_face ...`、`chibis/<角色>/<皮肤>/`，
+  角色/皮肤目录名 = names.json 值（官方英文，如 `Dalvi/Tricky_Lover`）。
+- **Texture2D 的 m_Name 不带后缀**（`Char060302_Idle_BR_01`），分类正则按 `{name}.png`
+  匹配；**TextAsset 带后缀**（`char003892.atlas`），映射 key 用去后缀的 stem。
+- 验证样本（都在 samples/browndust2，共 20 个 bundle，2026 版 file.json：
+  2023 条 bundle，来源盘缺 193 个目录）：
+  - `common-spritetexture-myroom...`：chibi 帧图 → `chibis/<角色>/<皮肤>/`；
+  - `spine/illustspine`（555d52，103.5MB）：全家桶 spine → `spine/character/<角色>/<皮肤>/`
+    + `light_novel_talk` + `npc`（Helena/Rising_Star 等三件套齐全）；
+  - `spine/illustspecial`（397MB）+ 其它：interaction(160)/special_animation(67)/costume 系列等
+    全部分类实测；spine、ui、chibis 输出见 `browndust2.md`「验证方法」。
+  - **skill_icons 是 Sprite 且图集纹理在另一 bundle**：`common-ui-texture_*` 里的
+    `skillicon_*` Sprite 的 `m_RD.texture` 指向 `common-ui-atlas.../bufficongui1.spriteatlasv2`
+    的高清图集页，单一 bundle 解析 Sprite.image 报 `cab-... not found`（纹理跨包）。
+    正解与参考 extractSkillIcons 一致：把 readableName 含 `common-ui-texture` 或
+    `bufficongui` 的 6 个 bundle **全部读进同一个 UnityPy Environment** 再抽 Sprite
+    （`_extract_skill_icons`，结果按 input_dir 缓存，只合并一次）。
+    输出 `ui/skill_icons/<名>.png`，20 样本下 1107 张，尺寸 108~112²。
 
 ### azurlane live2d（烘焙式 Cubism prefab，2026-09 已验证）
 
@@ -183,8 +199,7 @@ Texture2D 'telafaerjia' ... 'telafaerjia5'  (4096×4096/2048, ×5)
 2. **TextAsset 二进制 = surrogate str**：还原用 `encode("utf-8","surrogateescape")`。
 3. **同名多套模型**：`_pair_sets` 按内容配对；贴图配对 = 两遍扫描 Material 链，多页 atlas 逐页精确配对。
 4. **增量不回删**：输入里删掉的 bundle，历史输出与状态保留（约定）。
-5. 待办：names 表填充（azurlane/idleangels/BD2）、
-   BD2 真实 Spine 样本、bg HD 贴图是否独立 HD 包补。
+5. 待办：names 表填充（azurlane/idleangels）、bg HD 贴图是否独立 HD 包补。
 
 ## 样本清单
 
@@ -199,8 +214,10 @@ azurlane/live2d/  aijier_4 / dafeng_7 / guanghui_7（烘焙 Cubism prefab，已�
 azurlane/painting/ haitian_3_rw_tex（Sprite×2 同名 _2） / kalvbudisi_2_tex /
                    maliluosi_3_doa_tex（大图 + Sprite 切片，已验证）
   browndust2/  com.unity.addressables/（file.json / catalog_alpha.json / catalog_alpha.hash）
-               Shared/006b27eb.../a731.../__data + __info（myroom 贴图 bundle，已验证）
-  browndust2   待补：真实 Spine（atlas/skel）bundle + illust 立绘 bundle
+               Shared/006b27eb.../a731.../__data + __info（myroom chibi 贴图 bundle）
+               Shared/555d52b6.../a0c825.../__data（spine/illustspine 全家桶，103.5MB）
+               Shared/5807e416.../f041.../__data（isolated-cutscene061306）
+               全部已验证；来源 `F:\live2d\棕色尘埃2\` 还有 2020 个可用 `--source --filter` 增补
 ```
 
 > 拿到新游戏的样本后：放到 `samples/<game>/`，对着 `python -m waifu_unpack <game> --input samples\<game> --out samples\out --verbose` 的输出逐条验证；解析不了先看 `open_bundle` 报错里的文件头 hex。

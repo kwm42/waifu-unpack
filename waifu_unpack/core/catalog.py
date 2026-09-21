@@ -1,140 +1,162 @@
-"""AssetBundle 目录索引（棕色尘埃2 的 com.unity.addressables/file.json）。
+"""BD2 Addressables catalog 解析。
 
-该文件是 Addressables 的 bundle 清单，把磁盘上的 hash 文件名还原成逻辑路径：
-
-- `bundleName`   : 磁盘目录名（`Shared/<bundleName>/<hash>/__data` 的第一段）
-- `readableName` : 逻辑路径（如 `common-spritetexture-myroom_assets_common/char060302/myroom`）
-- `hash`         : `Shared/<bundleName>/<hash>` 的第二段（与磁盘子目录一致）
-- `size`         : 文件字节数（配合 MD5 校验是否下载完整）
-
-典型磁盘布局（UnityWebRequest 缓存目录）：
-
-    Shared/<bundleName>/<hash>/__data
-    Shared/<bundleName>/<hash>/__info
-
-可用它对上"磁盘 hash 文件 <-> 逻辑路径/签名字符串映射表"。
+两种数据来源，作用等价（都对应磁盘 Shared/<bundleName>/<hash>/__data）：
+  1. file.json（com.unity.addressables/files.json）—— 结构化的 manifest，
+     bundles[] 每项含 bundleName / hash / readableName / fileHash / size / bundleType；
+  2. catalog_alpha.json 的 m_KeyDataString —— Addressables 目录原始编码（base64），
+     参考程序 decoder.py 的做法：抽可打印字符串并按 `^.+_<32hex>.bundle$` 过滤，
+     得到 `<readableName>_<hash>.bundle`，尾部 32hex 即 hash。
 """
 
 from __future__ import annotations
 
+import base64
 import json
 import logging
 import re
-from dataclasses import dataclass
-from pathlib import PurePosixPath
-from typing import Optional
+import string
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Iterable, Iterator
 
 log = logging.getLogger(__name__)
 
-# 角色 key 形态：char + 6 位数字（如 char060302）
-_CHAR_KEY_RE = re.compile(r"\b(char\d{6})\b", re.IGNORECASE)
-
-_REMOTE_TYPE = "Remote"
+_BUNDLE_PATTERN = re.compile(r"^.+_[0-9a-fA-F]{32}\.bundle$")
+_MIN_PRINTABLE_LENGTH = 4
 
 
-@dataclass(frozen=True)
-class CatalogEntry:
+@dataclass
+class BundleEntry:
+    """磁盘 Shared/<bundleName>/<hash>/__data 与地址目录可读名的映射。"""
+
     bundle_name: str
     readable_name: str
-    hash: str
-    file_hash: str
-    size: int
-    bundle_type: str
+    hash: str = ""
+    file_hash: str = ""
+    size: int = 0
+    bundle_type: str = ""
 
     @property
-    def is_remote(self) -> bool:
-        return self.bundle_type == _REMOTE_TYPE
-
-    def lookup_char_key(self) -> Optional[str]:
-        """从逻辑路径中提取角色 key（char+6 位数字），没有返回 None。"""
-        m = _CHAR_KEY_RE.search(self.readable_name.replace("-", "/"))
-        return m.group(1).lower() if m else None
+    def content(self) -> str:
+        """分类用的内容名（去掉尾部 hash 段与路径分隔）。"""
+        return self.readable_name
 
 
 class Catalog:
-    """file.json 的解析结果：多种键可查 bundle 条目。"""
+    """BundleEntry 的按 hash / content 检索集。"""
 
-    def __init__(self) -> None:
-        self.entries: list[CatalogEntry] = []
-        self._by_bundle_name: dict[str, CatalogEntry] = {}
-        self._by_hash: dict[str, CatalogEntry] = {}
-        self._by_readable: dict[str, CatalogEntry] = {}
-
-    # ------------------------------------------------------------------
-    # 构建
-    # ------------------------------------------------------------------
-    @classmethod
-    def from_file_json(cls, path) -> "Catalog":
-        """解析 Addressables 的 file.json。"""
-        data = json.loads(path.read_text(encoding="utf-8"))
-        catalog = cls()
-        for raw in data.get("bundles", []):
-            entry = CatalogEntry(
-                bundle_name=str(raw.get("bundleName", "")),
-                readable_name=str(raw.get("readableName", "")),
-                hash=str(raw.get("hash", "")),
-                file_hash=str(raw.get("fileHash", "")),
-                size=int(raw.get("size", 0)),
-                bundle_type=str(raw.get("bundleType", "")),
-            )
-            if not entry.bundle_name:
-                continue
-            catalog.entries.append(entry)
-            catalog._by_bundle_name[entry.bundle_name] = entry
-            if entry.hash:
-                catalog._by_hash.setdefault(entry.hash, entry)
-            if entry.readable_name:
-                catalog._by_readable.setdefault(entry.readable_name, entry)
-        return catalog
-
-    @classmethod
-    def discover(cls, base_dir) -> Optional["Catalog"]:
-        """在目录树下找 `com.unity.addressables/file.json` 并加载。
-
-        找不到时返回 None（此时只能以 hash 文件名兜底，逻辑映射缺失）。
-        """
-        from pathlib import Path
-
-        root = Path(base_dir)
-        for candidate in sorted(root.glob("**/file.json")):
-            try:
-                catalog = cls.from_file_json(candidate)
-            except (json.JSONDecodeError, OSError) as exc:
-                log.warning("目录清单 %s 解析失败: %s", candidate, exc)
-                continue
-            log.info("已加载目录清单: %s (%d 条)", candidate, len(catalog.entries))
-            return catalog
-        return None
-
-    # ------------------------------------------------------------------
-    # 查询
-    # ------------------------------------------------------------------
-    def resolve(self, bundle_name: str) -> Optional[CatalogEntry]:
-        return self._by_bundle_name.get(bundle_name)
-
-    def resolve_hash(self, digest: str) -> Optional[CatalogEntry]:
-        return self._by_hash.get(digest)
-
-    def resolve_readable(self, readable: str) -> Optional[CatalogEntry]:
-        return self._by_readable.get(readable)
+    def __init__(self, entries: Iterable[BundleEntry]) -> None:
+        self.bundles: list[BundleEntry] = list(entries)
+        self._by_hash: dict[str, BundleEntry] = {}
+        for e in self.bundles:
+            if e.hash:
+                self._by_hash.setdefault(e.hash.lower(), e)
 
     def __len__(self) -> int:
-        return len(self.entries)
+        return len(self.bundles)
 
-    def __repr__(self) -> str:  # pragma: no cover - 调试输出
-        return f"<Catalog {len(self.entries)} bundles>"
+    def __iter__(self) -> Iterator[BundleEntry]:
+        return iter(self.bundles)
+
+    def get(self, hash: str) -> BundleEntry | None:
+        return self._by_hash.get(hash.lower())
+
+    def match_keywords(self, keywords: Iterable[str]) -> list[BundleEntry]:
+        """按 readableName 关键词（忽略大小写，任一命中）过滤。"""
+        kws = {k.lower() for k in keywords if k}
+        if not kws:
+            return []
+        return [
+            e for e in self.bundles
+            if any(k in e.readable_name.lower() for k in kws)
+        ]
+
+    # ------------------------------------------------------------------
+    # 加载
+    # ------------------------------------------------------------------
+    @classmethod
+    def from_file_json(cls, path: Path) -> "Catalog":
+        root = json.loads(Path(path).read_text(encoding="utf-8"))
+        entries: list[BundleEntry] = []
+        for b in root.get("bundles", []):
+            entries.append(
+                BundleEntry(
+                    bundle_name=str(b.get("bundleName", "")),
+                    readable_name=str(b.get("readableName", "")),
+                    hash=str(b.get("hash", "")),
+                    file_hash=str(b.get("fileHash", "")),
+                    size=int(b.get("size", 0) or 0),
+                    bundle_type=str(b.get("bundleType", "")),
+                )
+            )
+        log.info("file.json: 解析出 %d 个 bundle", len(entries))
+        return cls(entries)
+
+    @classmethod
+    def from_catalog_alpha(cls, path: Path) -> "Catalog":
+        """从 catalog_alpha.json 的 m_KeyDataString 解码出 bundle 清单。"""
+        decoded = decode_catalog_key_data_strings(path)
+        entries: list[BundleEntry] = []
+        for bundle in decoded:
+            hash = bundle[-32:]
+            name = bundle[:-33]
+            entries.append(BundleEntry(bundle_name="", readable_name=name, hash=hash))
+        log.info("catalog_alpha: 解码出 %d 个 bundle", len(entries))
+        return cls(entries)
 
 
-def char_key_from_name(name: str) -> Optional[str]:
-    """从任意字符串中提取角色 key（char+6 位数字），归一化为小写。"""
-    m = _CHAR_KEY_RE.search(str(name))
-    return m.group(1).lower() if m else None
+# ----------------------------------------------------------------------
+# m_KeyDataString 解码（移植自参考程序 Myssal_Catalog_Decoder/decoder.py）
+# ----------------------------------------------------------------------
+def decode_catalog_key_data_strings(catalog_path: Path) -> list[str]:
+    if not Path(catalog_path).is_file():
+        raise FileNotFoundError(f"Catalog file not found: {catalog_path}")
+    root = json.loads(Path(catalog_path).read_text(encoding="utf-8"))
+    decoded: list[str] = []
+    _find_and_decode_keys(root, decoded)
+    log.info("catalog_alpha: 解码出 %d 条 bundle 串", len(decoded))
+    return decoded
 
 
-def readable_dirname(readable: str) -> str:
-    """逻辑路径 → 安全的相对目录名（去掉 `_assets_*` 段与无意义的空段）。"""
-    parts = [p for p in PurePosixPath(readable).parts if p]
-    # 去掉 `xxx_assets_all` / `xxx_assets_ui` 这类资源段，保留语义段
-    kept = [p for p in parts if not re.match(r"^[a-z0-9]+_assets_[a-z0-9]+$", p, re.IGNORECASE)]
-    base = "/".join(kept) if kept else readable
-    return base.strip("/")
+def _find_and_decode_keys(token, result: list[str]) -> None:
+    if isinstance(token, dict):
+        for key, value in token.items():
+            if key == "m_KeyDataString":
+                data = _safe_base64_decode(str(value))
+                for s in _extract_printable_strings(data, _MIN_PRINTABLE_LENGTH):
+                    if _BUNDLE_PATTERN.match(s):
+                        result.append(s.replace(".bundle", ""))
+            _find_and_decode_keys(value, result)
+    elif isinstance(token, list):
+        for item in token:
+            _find_and_decode_keys(item, result)
+
+
+def _safe_base64_decode(data: str) -> bytes:
+    if not data:
+        return b""
+    data = data.strip()
+    pad = len(data) % 4
+    if pad:
+        data += "=" * (4 - pad)
+    try:
+        return base64.b64decode(data, validate=False)
+    except Exception:  # noqa: BLE001
+        return b""
+
+
+def _extract_printable_strings(data: bytes, min_length: int) -> list[str]:
+    printable = set(string.printable)
+    current: list[str] = []
+    results: list[str] = []
+    for b in data:
+        ch = chr(b)
+        if ch in printable and ch not in "\r\n\t\x0b\x0c":
+            current.append(ch)
+        else:
+            if len(current) >= min_length:
+                results.append("".join(current))
+            current = []
+    if len(current) >= min_length:
+        results.append("".join(current))
+    return results
